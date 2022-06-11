@@ -1,0 +1,32 @@
+// preventing other people to login unauthothorized accounts by using cookies
+// this is a security feature
+we can divide these people into two groups
+1. unauthorised users with same public ip adress as the legit user
+2. unauthorised users with different public ip adress as the legit user
+token=ghgsdghghdf expires=no signatured only with the public ip of the user means 
+if any one else took the token and set the cookies to his computer it will not work
+because the token is only valid for the user who created it
+but this methon has one problem and it is that if someone with same public adress use his token 
+he can access it => public ip is not enough to make sure that the token is valid
+so what is the solution?
+some solutions
+1. use a private key to sign the token
+2. use a private key to sign the token and then encrypt it with a public key
+3. use a private key to sign the token and then encrypt it with a public key and then encrypt it with a public key
+4. use a private key to sign the token and then encrypt it with a public key and then encrypt it with a public key and then encrypt it with a public key
+none of these solutions is secure
+so what is the solution?
+the last solution is that the user now has the decision
+1. use two step verification
+2. take the risk and use one step verification
+what if the user choose the risk option how we can find other ways to protect his account because it is our responsibility to protect his account
+--security risk option 2 is solved by using public ip adress encryption
+
+-- now we use to corrept the token after the logged out and deny access 2 devices loging 
+this is only for users who is not using two step verification
+-- security risk option 1 has been solved partially but it needs improvement by using browser finger print
+........................................ END ..................................................................
+
+
+
+
