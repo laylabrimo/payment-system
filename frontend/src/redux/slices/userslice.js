@@ -4,8 +4,7 @@ export const userslice= createSlice({
     name:'userslice',
     initialState:{
         user:{
-            name:'imran nur hirey',
-            id:1
+            
         }
     },
     reducers:{

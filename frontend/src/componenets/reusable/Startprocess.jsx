@@ -10,11 +10,15 @@ import Verification from './Verification'
 import Phonenumbeverify from './verifications/Phonenumbeverify';
 import Emailverify from './verifications/Emailverify'
 import Agreement from './verifications/Agreement';
+import { Cookies } from 'react-cookie';
 
 
 export default function Startprocess() {
     let navigate=useNavigate()
-    let [agreementaccepted,setagreementtaccepted]=useState(false)
+    let cookies= new Cookies()
+    let agreemnetaccepted= cookies.get('agreementaccespted')
+    // agreement accepted
+    let [agreementaccepted,setagreementtaccepted]=useState(agreemnetaccepted)
     let [emailverified,setemailverified]=useState(false)
     let [numberverified,setnumberverified]=useState(false)
     let [documentverified,setdocumentverified]=useState(false)
@@ -27,10 +31,10 @@ export default function Startprocess() {
   }
  
   if (!emailverified && agreementaccepted){
-      return <Emailverify/>
+      return <Emailverify setemailverified={setemailverified}/>
   }
   if (emailverified && agreementaccepted){
-    return <Phonenumbeverify/>
+    return <Phonenumbeverify setnumberverified={setnumberverified}/>
 }
  
   return <h1>everything is finished</h1>

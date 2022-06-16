@@ -3,10 +3,12 @@ import { Box, Card, CardHeader, CardContent, Typography, Link, Button, CardActio
 import { Check, Download } from '@mui/icons-material';
 import process from '../../../images/process.svg'
 import { useSelector } from 'react-redux';
+import { Cookies } from 'react-cookie';
 
 export default function Agreement({setagreementtaccepted}) {
-    let user= useSelector(state=>state.user)
-    console.log(user)
+   
+    let cookies= new Cookies()
+    
     
   return (
     <Box sx={{
@@ -64,9 +66,9 @@ export default function Agreement({setagreementtaccepted}) {
                         </Box>
                         <Typography gutterBottom variant='h5'>
                             only users who took these processes and successfully completed
-                            will be able to use our serveses if face encounter any
+                            will be able to use our serveses if you encounter any
                             problem during this process please don't hestitate to
-                            contact us via hotline line +252615248934 or just email us
+                            contact us via hotline +252615248934 or just email us
                             help@ourpaymentsystem.com
                         </Typography>
                         <CardHeader title='some helpfull resources'/>
@@ -125,6 +127,8 @@ export default function Agreement({setagreementtaccepted}) {
                      <CardActions>
                          <Button onClick={()=>{
                              setagreementtaccepted(true)
+                             cookies.set('agreementaccespted',true)
+                             
 
                          }} color='primary' variant='contained'>Accept and continue </Button>
                          <Button  color='secondary' variant='contained'>dont't accept and contact us</Button>
