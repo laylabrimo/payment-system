@@ -1,9 +1,13 @@
 const express = require("express");
 const bodyparser = require("body-parser");
+let fileupload =require('express-fileupload')
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const app = express();
+app.use(fileupload());
+app.use(express.static("files"));
 let uuid = require("uuid");
+let uploaddoc= require('../backend/routes/uploadfile')
 let register = require("./routes/register");
 let users = require("../backend/database/schemas/regstrationSchema");
 app.use(
@@ -13,6 +17,7 @@ app.use(
 );
 app.use(bodyparser());
 app.use("/register", register);
+app.use('/upload',uploaddoc)
 app.post("/verifytoken", (req, res) => {
   let token = req.body.data.token;
   setTimeout(() => {

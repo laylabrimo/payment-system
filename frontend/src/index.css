@@ -27,3 +27,6 @@ html {
 *{
   overflow:'-moz-hidden-unscrollable'
 }
+input[type='file']{
+  display: none;
+}

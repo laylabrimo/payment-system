@@ -11,6 +11,7 @@ import Phonenumbeverify from './verifications/Phonenumbeverify';
 import Emailverify from './verifications/Emailverify'
 import Agreement from './verifications/Agreement';
 import { Cookies } from 'react-cookie';
+import Documentverification from './verifications/Documentverification';
 
 
 export default function Startprocess() {
@@ -23,18 +24,23 @@ export default function Startprocess() {
     let [numberverified,setnumberverified]=useState(false)
     let [documentverified,setdocumentverified]=useState(false)
     let [faceverified,setfaceverified]=useState(false)
-
-
-
-  if (!agreementaccepted){
+    let acceptagreement=!agreementaccepted
+    let verifyemail=!emailverified && agreementaccepted
+    let verifynumber=!numberverified && agreementaccepted && emailverified
+    let verifydocument= !documentverified && numberverified && agreementaccepted && emailverified
+  if (acceptagreement){
     return  <Agreement setagreementtaccepted={setagreementtaccepted} />
   }
  
-  if (!emailverified && agreementaccepted){
+  if (verifyemail){
       return <Emailverify setemailverified={setemailverified}/>
   }
-  if (emailverified && agreementaccepted){
+  if (verifynumber){
+
     return <Phonenumbeverify setnumberverified={setnumberverified}/>
+}
+if (verifydocument){
+  return <Documentverification setdocumentverified={setdocumentverified}/>
 }
  
   return <h1>everything is finished</h1>
