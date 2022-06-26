@@ -10,8 +10,9 @@ import Documentverification from './componenets/reusable/verifications/Documentv
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
- <Documentverification />
+ <App/>
   </Provider>
+  
    
  
 );

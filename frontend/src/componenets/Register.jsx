@@ -22,11 +22,11 @@ export default function Register() {
  
 
   let fields = [
-    { label: "what is your full name?", name: "fullname", value: "" },
-    { label: "what is your email?", name: "email", value: "" },
+    { label: "Enter your full name", name: "fullname", value: "" },
+    { label: "Enter your email", name: "email", value: "" },
     { label: "Birthdate", name: "birthdate", value: "" },
-    { label: "what you phone number?", name: "phonenumber", value: "" },
-    { label: "Enter Password", name: "password1", value: "" },
+    { label: "Phone number", name: "phonenumber", value: "" },
+    { label: "Enter Your Password", name: "password1", value: "" },
     { label: "Confirm your password", name: "password2", value: "" },
   ];
   const phoneRegExp =
@@ -62,6 +62,18 @@ export default function Register() {
   });
 
   // handlers
+  let handletype=(name)=>{
+    if(name==='password1' || name==='password2'){
+      return 'password'
+    }
+    else if(name==='birthdate'){
+      return 'date'
+    }
+    else{
+      return ''
+    }
+
+  }
   let handleregister=async(values)=>{
     let Resourses = new resourses();
                     Resourses.email = values.email;
@@ -165,7 +177,7 @@ export default function Register() {
                     <form onSubmit={formik.handleSubmit}>
                       {fields.map((f) => (
                         <Appinputfield
-                          type={f.name === "birthdate" ? "date" : ""}
+                          type={handletype(f.name)}
                           key={f.name}
                           onchange={formik.handleChange}
                           id={f.name}

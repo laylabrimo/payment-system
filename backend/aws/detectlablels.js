@@ -1,45 +1,51 @@
+///
 const AWS = require("aws-sdk");
-
+require('dotenv').config()
+let fs = require("fs");
+let getkeys=require('../config')
 const config = new AWS.Config({
-  accessKeyId: "AKIATXZZUBDHAYWH3YE7",
-  secretAccessKey: "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",
+  credentials:{
+    accessKeyId:'',
+    secretAccessKey:'',
+    
+  },
+
   region: "us-east-1",
 });
-
-function detectlabelska(bucket, photo) {
+console.log(config)
+let detectlabels = async () => {
   let labels = [];
   console.log("hi");
+  let file = "../filespassport2.jpg";
+  const bitmap = fs.readFileSync(file);
+  const buffer = new Buffer.from(bitmap, "base64");
+
   const client = new AWS.Rekognition(config);
-  const params = {
+
+  let params = {
     Image: {
-      S3Object: {
-        Bucket: bucket,
-        Name: photo,
-      },
+      Bytes: buffer,
     },
   };
-  client.detectLabels(params, (err, res) => {
-
-    if (err) {
-      console.log(err);
-    }
-    res.Labels.map((x) => {
-      if (x.Confidence < 90) {
-        labels = labels;
-      } else {
-        labels.push({ name: x.Name, confidence: x.Confidence });
+  await client
+    .detectLabels(params, (err, res) => {
+      if (err) {
+        console.log(err);
       }
-    });
-
-
-  }).promise()
-  .then(()=>{
-    return labels})
-  
+      res.Labels.map((x) => {
+        if (x.Confidence < 90) {
+          labels = labels;
+        } else {
+          labels.push({ name: x.Name, confidence: x.Confidence });
+        }
+      });
+      
+    }).promise()
+    return labels
+   
  
-  
-}
-let r=detectlabelska("faylasheeda", "passport2.jpg")
-console.log(r)
 
+   
+};
+module.exports=detectlabels
 

@@ -70,7 +70,13 @@ export default function Documentverification({ setnumberverified }) {
       "http://localhost:4000/upload",
       formdata
     );
-    console.log(res)
+    let code= res.data.msg
+    if (code===0){
+      seterror('our system detected that you did not upload your id please upload a your id ')
+    }
+    else if (code ===1){
+      seterror('our system detected that you uploaded id without your photo  please consider uploading an id with your photo')
+    }
     
    } catch (error) {
      console.log(error)
@@ -98,11 +104,15 @@ export default function Documentverification({ setnumberverified }) {
           alignItems: "center",
         }}
       >
+        
         <Card
           sx={{
             width: { xs: "90%", sm: "90%", md: "50%" },
           }}
         >
+          {error && <Alert>
+            <AlertTitle> {error && <p>{error}</p>}</AlertTitle>
+          </Alert>}
           <CardHeader
             translate="yes"
             title="step 3 upload your passport / NID"
@@ -161,7 +171,7 @@ export default function Documentverification({ setnumberverified }) {
             <>
               <CardContent>
                 <p>
-                  note: {filename} is your property and we will use this id only
+                  note: we consider that this is your property and we will use this id only
                   for verification purpose we will not share with other third
                   parties without your concern
                 </p>

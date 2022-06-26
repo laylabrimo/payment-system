@@ -10,6 +10,9 @@ let uuid = require("uuid");
 let uploaddoc= require('../backend/routes/uploadfile')
 let register = require("./routes/register");
 let users = require("../backend/database/schemas/regstrationSchema");
+const sendcode = require("./resources/sendcode");
+const sendemailthroughemail= require('../backend/sendcode_email')
+
 app.use(
   cors({
     origin: "*",
@@ -89,7 +92,16 @@ app.post("/sendverificationcode", async (req, res) => {
     } else {
       let otp = user[0].refrences.otp;
       if (otp == null) {
+      
         let code = makeid(6);
+        if (input.type=='email'){
+          sendemailthroughemail(user[0].name,user[0].email,code)
+        }
+        else{
+          sendcode(user[0].phone_number,user[0].name,code)
+        }
+       
+        console.log(user[0].phone_number,user[0].name,code)
         let updatedref=user[0].refrences
         updatedref.otp=code
         
