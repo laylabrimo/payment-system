@@ -26,9 +26,7 @@ export default function Phonenumbeverify({setnumberverified}) {
   let [verificationstarted, setverificationstarted] = useState(false);
   let [verificationcode, setverificationcode] = useState("");
   let [error, seterror] = useState("");
-  let [currentuser, setcurrentuser] = useState(
-    useSelector((state) => state.user)
-  );
+
   let [number, setnumber] = useState("");
   let params = useParams();
   let [usercode, setusercode] = useState("");
@@ -56,7 +54,6 @@ export default function Phonenumbeverify({setnumberverified}) {
     };
     sendverificationcode();
   }, [number]);
-  console.log("userka waa", currentuser,);
 
  
 

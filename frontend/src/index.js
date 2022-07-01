@@ -3,15 +3,24 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from 'react-redux'
-import store from './redux/store'
-import Documentverification from './componenets/reusable/verifications/Documentverification';
+import { Userprofider } from './contexts/Usercontext';
+import Faceverification from './componenets/reusable/verifications/Faceverification';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
- <App/>
-  </Provider>
+  <Userprofider>
+    <Auth0Provider
+    domain="dev-2fa6ipdc.us.auth0.com"
+    cli="Sgoe0UYZfAqdR1m3ab51iD2bIZRex1Wg"
+    clientId='Sgoe0UYZfAqdR1m3ab51iD2bIZRex1Wg'
+    
+    redirectUri={window.location.origin}
+  >
+    <App />
+  </Auth0Provider>,
+  </Userprofider>
+ 
   
    
  

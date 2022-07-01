@@ -3,14 +3,52 @@ const { isDate } = require("moment");
 const router = express.Router();
 let connectdatabase = require("../database/dbconnect");
 let User = require("../database/schemas/regstrationSchema");
+const jwt = require('jsonwebtoken');
+const verifyuser = require("../resources/verifyuser");
 connectdatabase;
 
-router.post('/',(req,res)=>{
-    let {email,password,location}= req.body.data
-    let {ip,country}=location
-    
-    let user = User.find({email:email})
+router.post("/", async(req, res) => {
+  let { email, number, password } = req.body.data;
+  console.log(req.body.data)
+  let loginmethod = "";
+  if (email && password) {
+    loginmethod = "email";
+  } else if (number && password) {
+    loginmethod = "number";
+  } else {
+    res.status(402).json("incomplete credentials");
+  }
 
-    
+  if (loginmethod) {
+    let user= await User.findOne(loginmethod=='email'?{email:email}:{phone_number:number})
+    if(user && user.password==password){
+        
+        let data={
+          email:user.email
+        }
+       
+        let accesstoken= jwt.sign(data,'verystrongsecretkey',{expiresIn:'60s'})
+        let refreshtoken= jwt.sign(data,'verystrongsecretkey')
+        var myquery = { email: user.email };
+        var newvalues = { $set: {security: {accesstoken:accesstoken,refreshtoken:refreshtoken}} };
+        User.findOneAndUpdate(myquery,newvalues,(err,res)=>{
+          if (err){
+            console.log(err)
+          }
+          console.log(res)
+        })
+        res.json({
+          accesstoken,
+          refreshtoken
+        })
 
-})
+         
+        
+    }
+    else{
+        res.status(401).json('no user with that credentials')
+    }
+  }
+});
+
+module.exports = router;

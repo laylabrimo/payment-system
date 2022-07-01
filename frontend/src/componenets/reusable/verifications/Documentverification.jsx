@@ -31,9 +31,9 @@ import {
 } from "@mui/icons-material";
 import resourses from "../../../features/resouces";
 import { useSelector } from "react-redux";
-export default function Documentverification({ setnumberverified }) {
+export default function Documentverification({setdocumentverified}) {
   let [verificationstarted, setverificationstarted] = useState(false);
-  let [verificationcode, setverificationcode] = useState("");
+  let [verified, setisverified] = useState(false);
   let [error, seterror] = useState("");
 
   let params = useParams();
@@ -55,6 +55,7 @@ export default function Documentverification({ setnumberverified }) {
   let handlechanche = () => {
     setfile(fileref.current.files[0]);
     setfilename(fileref.current.value);
+    seterror(null)
     console.log(fileref.current.files[0]);
   };
   let checkdocument = async() => {
@@ -63,6 +64,7 @@ export default function Documentverification({ setnumberverified }) {
     let filenamee=fileref.current.files[0].name
     const formdata= new FormData()
     setverificationstarted(true);
+    
     formdata.append("file",filee)
     formdata.append("filename",filenamee)
    try {
@@ -70,13 +72,20 @@ export default function Documentverification({ setnumberverified }) {
       "http://localhost:4000/upload",
       formdata
     );
-    let code= res.data.msg
-    if (code===0){
-      seterror('our system detected that you did not upload your id please upload a your id ')
-    }
-    else if (code ===1){
-      seterror('our system detected that you uploaded id without your photo  please consider uploading an id with your photo')
-    }
+    let code= res.data.code
+  
+   if (code!==1){
+    seterror('error')
+   }
+   else{
+     setisverified(true)
+     seterror("")
+     setTimeout(() => {
+      setdocumentverified(true)
+       
+     }, 2000);
+   }
+
     
    } catch (error) {
      console.log(error)
@@ -110,9 +119,13 @@ export default function Documentverification({ setnumberverified }) {
             width: { xs: "90%", sm: "90%", md: "50%" },
           }}
         >
-          {error && <Alert>
-            <AlertTitle> {error && <p>{error}</p>}</AlertTitle>
-          </Alert>}
+          {verified && 
+          <Alert severity='success'>sucess redrecting to faceverification page ...</Alert>
+
+         }{error && 
+          <Alert severity='warning'>{filename.slice(12)} is not valid document please check it again</Alert>
+
+         }
           <CardHeader
             translate="yes"
             title="step 3 upload your passport / NID"
@@ -152,6 +165,7 @@ export default function Documentverification({ setnumberverified }) {
           <CardActionArea>
             <CardActions>
               <LoadingButton
+              color={verified?'success':'info'}
                 sx={{
                   borderRadius: "15px",
                 }}
@@ -163,23 +177,28 @@ export default function Documentverification({ setnumberverified }) {
                 startIcon={verificationstarted ? null : <Check />}
                 fullWidth
               >
-                {verificationstarted ? "Checking" : "Check"}
+                {verificationstarted ? "Checking" :verified?'successfully verified':'check'}
               </LoadingButton>
+             
             </CardActions>
+            
           </CardActionArea>
+        
           {filename && (
             <>
               <CardContent>
                 <p>
-                  note: we consider that this is your property and we will use this id only
+                  <p style={{
+                    color:'red'
+                  }}>important</p>invalid documents will be deleted immidiately after checking it and we consider that {filename.slice(12)} is your property and we will use this document only
                   for verification purpose we will not share with other third
-                  parties without your concern
+                  parties without your concern . <a href="#">see more</a>
                 </p>
               </CardContent>
             </>
           )}
           <CardContent>
-            {verificationcode && <Link>cant't get the code</Link>}
+           
           </CardContent>
         </Card>
       </Box>

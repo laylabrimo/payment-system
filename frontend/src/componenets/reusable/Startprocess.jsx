@@ -12,6 +12,7 @@ import Emailverify from './verifications/Emailverify'
 import Agreement from './verifications/Agreement';
 import { Cookies } from 'react-cookie';
 import Documentverification from './verifications/Documentverification';
+import Faceverification from './verifications/Faceverification';
 
 
 export default function Startprocess() {
@@ -28,6 +29,10 @@ export default function Startprocess() {
     let verifyemail=!emailverified && agreementaccepted
     let verifynumber=!numberverified && agreementaccepted && emailverified
     let verifydocument= !documentverified && numberverified && agreementaccepted && emailverified
+    let verifyface=!faceverified && numberverified && agreementaccepted && emailverified && documentverified
+    console.log(verifyface)
+    console.log(verifydocument)
+    console.log(verifynumber)
   if (acceptagreement){
     return  <Agreement setagreementtaccepted={setagreementtaccepted} />
   }
@@ -41,6 +46,9 @@ export default function Startprocess() {
 }
 if (verifydocument){
   return <Documentverification setdocumentverified={setdocumentverified}/>
+}
+if (verifyface){
+  return <Faceverification setfaceverified={setfaceverified}/>
 }
  
   return <h1>everything is finished</h1>

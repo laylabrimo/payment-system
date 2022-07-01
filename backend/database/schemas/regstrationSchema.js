@@ -20,6 +20,9 @@ const regstrationSchema = new schema({
   refrences: {
     type: Object,
   },
+  security:{
+ type:Object
+  },
   history: {
     in: {
       type: Number,

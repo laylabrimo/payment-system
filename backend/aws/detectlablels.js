@@ -3,6 +3,8 @@ const AWS = require("aws-sdk");
 require('dotenv').config()
 let fs = require("fs");
 let getkeys=require('../config')
+
+
 const config = new AWS.Config({
   credentials:{
     accessKeyId:'',
@@ -12,11 +14,12 @@ const config = new AWS.Config({
 
   region: "us-east-1",
 });
-console.log(config)
-let detectlabels = async () => {
+
+let detectlabels = async (filename) => {
   let labels = [];
   console.log("hi");
-  let file = "../filespassport2.jpg";
+  let file = `./files/${filename}`;
+  console.log(file)
   const bitmap = fs.readFileSync(file);
   const buffer = new Buffer.from(bitmap, "base64");
 

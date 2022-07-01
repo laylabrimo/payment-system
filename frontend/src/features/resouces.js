@@ -9,11 +9,22 @@ export default class resourses {
   token = "";
   verificationtype = "";
   logged = false;
-  token=''
-
-  login = (data) => {
-    this.logged(true);
+  token = "";
+  refreshtoken = "";
+  login = async (data) => {
+  
     //  call http end point
+   try {
+    await axios.post("http://localhost:4000/login", { data }).then((res) => {
+      localStorage.setItem("accesstoken", res.data.accesstoken);
+      window.location.reload()
+
+      // get access token and store in localstorage
+    });
+   } catch (error) {
+     return 'error'
+   }
+
     // => create logging token
     // =>
   };
@@ -23,7 +34,6 @@ export default class resourses {
   };
 
   getverificationlink = async () => {
-    
     let data = {
       phone_number: this.phonenumber,
       email: this.email,
@@ -35,59 +45,73 @@ export default class resourses {
     return res.data;
   };
   verifytoken = async () => {
+    let access_token = localStorage.getItem("accesstoken");
     let data = {
-      token: this.token,
+      token: access_token,
     };
+    console.log(data);
     let res = await axios.post("http://localhost:4000/verifytoken", { data });
     return res;
   };
 
   sendverificationcode = async () => {
-    console.log('qeybta bilawga')
+    console.log("qeybta bilawga");
     let data = {
       email: this.email,
       phonenumber: this.phonenumber,
     };
     if (this.verificationtype === "email") {
-      console.log('qeybta emailka')
+      console.log("qeybta emailka");
       let res = await axios.post("http://localhost:4000/sendverificationcode", {
         data: { email: data.email, vertype: "email" },
       });
-     
+
       return res.data;
     }
     if (this.verificationtype === "number") {
-      console.log('qeybta numberka')
+      console.log("qeybta numberka");
       let res = await axios.post("http://localhost:4000/sendverificationcode", {
         data: { number: data.phonenumber, vertype: "number" },
       });
-     
+
       return res.data;
     }
-    console.log('qeybta dhamaadka')
+    console.log("qeybta dhamaadka");
   };
-  changevercode=async()=>{
-    let data={
-      type:'',
-      value:''
-    }
-    if (this.verificationtype=='email'){
-      data.type='email'
-      data.value=this.email
+  changevercode = async () => {
+    let data = {
+      type: "",
+      value: "",
+    };
+    if (this.verificationtype == "email") {
+      data.type = "email";
+      data.value = this.email;
       let res = await axios.post("http://localhost:4000/changevercode", {
-       data,
+        data,
       });
-      console.log(res.data)
-
+      console.log(res.data);
     }
-    
-  }
+  };
 
-  retriveuserbytoken=async()=>{
-    let user=axios.post('http://localhost:4000/retriveuserbytoken',{token:this.token})
-    return (await user).data
+  retriveuserbytoken = async () => {
+    let user = axios.post("http://localhost:4000/retriveuserbytoken", {
+      token: this.token,
+    });
+    return (await user).data;
+  };
+  refreshtoken = async () => {
+    console.log("refreshing the token ....");
+    let access_token = localStorage.getItem("accesstoken");
+    console.log("akses tokenka waa ", access_token);
+    let res = await axios.post("http://localhost:4000/refreshtoken", {
+      token: access_token,
+    });
+    let isok=res.data.access_token
+    if (isok){
+    localStorage.setItem('accesstoken',isok)
+    }
    
-
-      
-  }
+    
+    return res;
+  };
 }

@@ -6,6 +6,7 @@ let User = require("../database/schemas/regstrationSchema");
 connectdatabase;
 
 router.post("/", async (req, res) => {
+  console.log('hello')
   console.log(req.body.user);
   let { fullname, email, phonenumber, password1, birthdate } = req.body.user;
   let checkemail= await User.findOne({email:email})
@@ -25,6 +26,11 @@ router.post("/", async (req, res) => {
       phone_number: phonenumber,
       password: password1,
       birthdate: birthdate,
+      security:{
+        accesstoken:'',
+        refreshtoken:''
+
+      },
       refrences: {
         emailverified: false,
         numberverified: false,

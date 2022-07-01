@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 
 import {
   Alert,
@@ -21,13 +21,14 @@ import { useParams } from "react-router-dom";
 import { DomainVerification, Check, Error } from "@mui/icons-material";
 import resourses from "../../../features/resouces";
 import { useSelector } from "react-redux";
-export default function Emailverify({setemailverified}) {
+import { Usercontext } from '../../../contexts/Usercontext';
+export default function Emailverify({ setemailverified }) {
   let [verificationstarted, setverificationstarted] = useState(false);
   let [verificationcode, setverificationcode] = useState("");
   let [error, seterror] = useState("");
-  let [currentuser, setcurrentuser] = useState(
-    useSelector((state) => state.user)
-  );
+  let [setuser,user]=useContext(Usercontext)
+  console.log(user)
+  
   let [email, setemail] = useState("");
   let params = useParams();
   let [usercode, setusercode] = useState("");
@@ -53,7 +54,6 @@ export default function Emailverify({setemailverified}) {
     };
     sendverificationcode();
   }, [email]);
-  console.log("userka waa", currentuser);
  
 
   let verifyemail = () => {
@@ -61,15 +61,15 @@ export default function Emailverify({setemailverified}) {
     let codeka = usercode;
     console.log(codeka);
     let ok = verificationcode == codeka;
-    setTimeout(async() => {
+    setTimeout(async () => {
       if (ok) {
         seterror("");
-        setemailverified(true)
-        let Res= new resourses()
-        Res.verificationtype='email',
-        Res.email=email
-        let r=await Res.changevercode()
-        
+        setemailverified(true);
+        let Res = new resourses();
+        Res.verificationtype = "email" 
+        Res.email = email
+        await Res.changevercode();
+
         setverificationstarted(false);
       } else {
         seterror("verification code is wrong!");

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Alert, AlertTitle, Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import logo from "../images/logo.svg";
@@ -13,10 +13,11 @@ import { ArrowForward, Dangerous, WrongLocation } from "@mui/icons-material";
 import Appinputfield from "./reusable/Appinputfield";
 import resourses from "../features/resouces";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { adduser } from "../redux/slices/userslice";
+import { Usercontext } from '../contexts/Usercontext';
 export default function Register() {
-  let dispatch=useDispatch()
+  let [setuser,user]=useContext(Usercontext)
+  console.log(user)
+  
   let [currentsteps, setcurrentsteps] = useState(0);
   let [errormessage,seterrormessage]=useState('')
  
@@ -91,7 +92,9 @@ export default function Register() {
 
                     }
                     else{
+                      setuser(res.data)
                      console.log('haaay')
+                     console.log(user)
                      console.log(resp.data.user)
                       let number=resp.data.user.number
                       let email=resp.data.user.email
@@ -101,7 +104,6 @@ export default function Register() {
                       Resources.phonenumber=number
                       Resources.email=email
                       let token= await Resources.getverificationlink()
-                      dispatch(adduser(resp.data.user))
                       navigate('/verify/'+token.link)
                       
                       

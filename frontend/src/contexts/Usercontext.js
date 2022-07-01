@@ -1,0 +1,43 @@
+import React,{useState,createContext, useEffect} from 'react'
+import Resourses from '../features/resouces'
+export const Usercontext=createContext()
+export const Userprofider=(props)=>{
+   useEffect(()=>{
+    let getuser=async()=>{
+        let usertoken=localStorage.getItem('accesstoken')
+        if (usertoken){
+            console.log(usertoken)
+            let resources=new Resourses()
+            resources.token=usertoken
+            let res=await resources.verifytoken()
+            console.log('getting user',res.data)
+            if(!res.data.data.email){
+                setuser(null)
+                
+            }
+            else{
+               resources.token=usertoken
+               resources.refreshtoken()
+               let respond=await resources.retriveuserbytoken()
+               let user=respond.data.userka
+              setuser(user)
+            }
+            
+        }
+        else{
+            setuser(null)
+        }
+    }
+    getuser()
+   },[])
+   
+    let [user,setuser]=useState('null')
+    console.log(user)
+
+    return (
+        <Usercontext.Provider value={[user,setuser]}>
+            {props.children}
+        </Usercontext.Provider>
+    )
+
+}
