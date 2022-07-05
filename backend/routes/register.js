@@ -3,6 +3,7 @@ const { isDate } = require("moment");
 const router = express.Router();
 let connectdatabase = require("../database/dbconnect");
 let User = require("../database/schemas/regstrationSchema");
+const createcustomer = require("../payments/createcustomer");
 connectdatabase;
 
 router.post("/", async (req, res) => {
@@ -19,9 +20,19 @@ router.post("/", async (req, res) => {
 
   }
   else{
+    let userka={
+     name:fullname,
+     email:email,
+     phone:phonenumber
+
+    }
+    let getuser= await createcustomer(userka)
+    console.log(getuser)
 
     let user = new User({
       name: fullname,
+      cus_id:getuser.id,
+      payment_method:[],
       email: email,
       phone_number: phonenumber,
       password: password1,
@@ -29,6 +40,18 @@ router.post("/", async (req, res) => {
       security:{
         accesstoken:'',
         refreshtoken:''
+
+      },
+      finanaces:{
+        blance:0,
+        requests:{
+          in:[],out:[]
+        },
+        transactions:{
+          in:[],
+          out:[]
+        }
+
 
       },
       refrences: {

@@ -5,6 +5,10 @@ const regstrationSchema = new schema({
   name: {
     type: String,
   },
+  cus_id:String,
+  payment_methods:{
+    type:Array
+  },
   email: {
     type: String,
   },
@@ -19,6 +23,9 @@ const regstrationSchema = new schema({
   },
   refrences: {
     type: Object,
+  },
+  finanaces:{
+   type:Object
   },
   security:{
  type:Object

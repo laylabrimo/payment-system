@@ -16,10 +16,22 @@ const sendcode = require("./resources/sendcode");
 const sendemailthroughemail = require("../backend/sendcode_email");
 const saveImage = require("./resources/uploadfilefrombase64");
 const detectlabels = require("./aws/detectlablels");
+const {Server} =require('socket.io')
+let http=require('http');
+const addpaymenmethod = require("./payments/addpaymentmethod");
+let server=http.createServer(app)
+const io= new Server(server,{
+  cors:{
+    origin:'*'
+  }
+})
 
+io.on('connection',(socket)=>{
+  console.log('someone connected ',socket.id)
+ 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
   })
 );
 app.use(bodyparser({}));
@@ -61,16 +73,20 @@ function makeid(length) {
 }
 app.post("/retriveuserbytoken", async (req, res) => {
   let token = req.body.token;
+  console.log('halkaanw axaa lagu soo dabacay',token)
   try {
     let user = jwt.verify(token, "verystrongsecretkey");
+    console.log('in jwt',user)
     let userka = await users.findOne({ email: user.email });
+    console.log('in mongodb',userka)
+    console.log(userka)
     res.json({
       data: {
         userka,
       },
     });
   } catch (error) {
-    console.log("erroraa jiro");
+    console.log("erroraa jiro",error.message);
     res.json({
       data: {
         user: null,
@@ -80,68 +96,80 @@ app.post("/retriveuserbytoken", async (req, res) => {
 });
 app.post("/changevercode", (req, res) => {
   let s = req.body;
-  console.log(s);
+  let otp=makeid(6)
+  console.log(otp)
+  var myquery = { email: s.email };
+        var newvalues = { $set: {refrences: {otp:otp}} };
+        users.findOneAndUpdate(myquery,newvalues,(err,res)=>{
+          if (err){
+            console.log(err)
+          }
+          socket.emit('labadalay',{codeka:otp})
+          console.log(res)
+
+        })
+
 });
 app.post("/sendverificationcode", async (req, res) => {
-  let ver_type = req.body.data.vertype;
-  let input = { type: "", data: "" };
-  if (ver_type === "email") {
-    input.type = "email";
-    input.data = req.body.data.email;
-  } else {
-    input.type = "phone_number";
-    input.data = req.body.data.number;
-  }
-
-  console.log(input);
-  try {
-    let user = "";
-    input.type == "email"
-      ? (user = await users.find({ email: input.data }))
-      : (user = await users.find({ phone_number: input.data }));
-    if (user.length === 0) {
-      return 0;
-    } else {
-      let otp = user[0].refrences.otp;
-      if (otp == null) {
-        let code = makeid(6);
-        if (input.type == "email") {
-          sendemailthroughemail(user[0].name, user[0].email, code);
-        } else {
-          sendcode(user[0].phone_number, user[0].name, code);
-        }
-
-        console.log(user[0].phone_number, user[0].name, code);
-        let updatedref = user[0].refrences;
-        updatedref.otp = code;
-
-        await users.findOneAndUpdate(
-          input.type === "email"
-            ? { email: input.data }
-            : { phone_number: input.data },
-          { refrences: updatedref }
-        );
-        res.json({
-          code: code,
-          type: input.type === "email" ? "email" : "number",
-        });
-      } else {
-        let otp = user[0].refrences.otp;
-        res.json({
-          code: otp,
-          type: input.type === "email" ? "email" : "number",
-        });
-      }
+  let data= req.body.data
+  console.log(data)
+  // email
+   if(data.email){
+     let user= await users.findOne({email:data.email})
+     let haveotp=user.refrences.otp
+     if(haveotp==null){
+       console.log('generate otp')
+       let otp=makeid(6)
+       //update the otp
+       var myquery = { email: data.email };
+        var newvalues = { $set: {refrences: {otp:otp}} };
+        users.findOneAndUpdate(myquery,newvalues,(err,res)=>{
+          if (err){
+            console.log(err)
+          }
+          console.log(res)
+        })
+       // send the user by email
+       res.json({
+         otp
+       })
+     }
+     else{
+      let otp=user.refrences.otp
+      res.json({
+        otp
+      })
+     }
+     
+   }
+   if(data.number){
+    let user= await users.findOne({phone_number:data.number})
+    let haveotp=user.refrences.otp
+    if(haveotp==null){
+      console.log('generate otp with number')
+      let otp=makeid(6)
+      // send the user by number
+      res.json({
+        otp
+      })
     }
-  } catch (error) {
-    console.log(error.message);
+    else{
+      let otp=user.refrences.otp
+      res.json({
+        otp
+      })
+    }
+    
   }
+
+
 });
 app.post("/generate-verification-link", async (req, res) => {
+  console.log('waa lii imaaday')
   let payload = {
     data: req.body.data,
   };
-  let token = jwt.sign(payload, "something secret", { expiresIn: "60m" });
+  let token = jwt.sign(payload, "verystrongsecretkey", { expiresIn: "60m" });
   let link = "http://localhost:3000/" + token;
   res.json({
     link: token,
@@ -180,5 +208,15 @@ app.post("/refreshtoken", async (req, res) => {
     res.status(403).json("token must be profided");
   }
 });
+app.post('/addpm',async(req,res)=>{
+  console.log('ok',req.body.data)
+addpaymenmethod(req.body.data)
+.then((resp)=>{
+  console.log(resp)
+})
+  
+  
+})
+})
 
-app.listen(4000);
+server.listen(4000);
