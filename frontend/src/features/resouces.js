@@ -29,7 +29,8 @@ export default class resourses {
     // =>
   };
   logout = (data) => {
-    this.logged = false;
+    localStorage.removeItem('accesstoken')
+    window.location.reload()
     //  call http end point
   };
 
@@ -56,14 +57,11 @@ export default class resourses {
 
   sendverificationcode = async () => {
     console.log("qeybta bilawga");
-    let data = {
-      email: this.email,
-      phonenumber: this.phonenumber,
-    };
+   
     if (this.verificationtype === "email") {
       console.log("qeybta emailka");
       let res = await axios.post("http://localhost:4000/sendverificationcode", {
-        data: { email: data.email, vertype: "email" },
+        data: { email: this.email, vertype: "email" },
       });
 
       return res.data;
@@ -71,7 +69,7 @@ export default class resourses {
     if (this.verificationtype === "number") {
       console.log("qeybta numberka");
       let res = await axios.post("http://localhost:4000/sendverificationcode", {
-        data: { number: data.phonenumber, vertype: "number" },
+        data: { number: this.phonenumber, vertype: "number" },
       });
 
       return res.data;
@@ -79,25 +77,20 @@ export default class resourses {
     console.log("qeybta dhamaadka");
   };
   changevercode = async () => {
-    let data = {
-      type: "",
-      value: "",
-    };
-    if (this.verificationtype == "email") {
-      data.type = "email";
-      data.value = this.email;
+  
       let res = await axios.post("http://localhost:4000/changevercode", {
-        data,
+        email:this.email,
       });
-      console.log(res.data);
-    }
+     return res.data
+ 
   };
 
   retriveuserbytoken = async () => {
-    let user = axios.post("http://localhost:4000/retriveuserbytoken", {
+    let user = await axios.post("http://localhost:4000/retriveuserbytoken", {
       token: this.token,
     });
-    return (await user).data;
+    console.log('in retrive user by token',user,this.token)
+    return user
   };
   refreshtoken = async () => {
     console.log("refreshing the token ....");
@@ -114,4 +107,15 @@ export default class resourses {
     
     return res;
   };
+  addpaymentmethod=async(data)=>{
+    console.log('datada',data)
+    let access_token = localStorage.getItem("accesstoken");
+    this.token=access_token
+    let user= await this.retriveuserbytoken()
+    console.log('add payment method',user)
+    let res= await axios.post('http://localhost:4000/addpm',{data:data})
+    console.log(res)
+
+
+  }
 }

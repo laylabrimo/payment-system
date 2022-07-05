@@ -28,17 +28,22 @@ export default function Phonenumbeverify({setnumberverified}) {
   let [error, seterror] = useState("");
 
   let [number, setnumber] = useState("");
+  let [email, setemail] = useState("");
   let params = useParams();
   let [usercode, setusercode] = useState("");
-
+console.log('heey')
   useEffect(() => {
     let retrivetheuser = async () => {
+
       let token = params.id;
+      console.log(token)
       let Res = new resourses();
       Res.token = token;
       let user = await Res.retriveuserbytoken();
-      console.log(user.data.user.data.phone_number)
-      setnumber(user.data.user.data.phone_number);
+      console.log(user.data.data.userka.phone_number)
+      setnumber(user.data.data.userka.phone_number);
+      setemail(user.data.data.userka.email);
+
     };
 
     retrivetheuser();
@@ -50,7 +55,7 @@ export default function Phonenumbeverify({setnumberverified}) {
       Res.phonenumber = number;
       let code = await Res.sendverificationcode();
       console.log('codeka waa ',code)
-      setverificationcode(code.code);
+      setverificationcode(code.otp);
     };
     sendverificationcode();
   }, [number]);
@@ -62,10 +67,17 @@ export default function Phonenumbeverify({setnumberverified}) {
     let codeka = usercode;
     console.log(codeka);
     let ok = verificationcode == codeka;
-    setTimeout(() => {
+    console.log('mayeey')
+    setTimeout(async() => {
       if (ok) {
+      console.log('kaalay')
         seterror("");
+
         setnumberverified(true)
+        let Res = new resourses();
+        Res.verificationtype = "email" 
+        Res.email = email
+        await Res.changevercode();
         setverificationstarted(false);
       } else {
         seterror("verification code is wrong!");

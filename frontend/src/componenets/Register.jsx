@@ -15,7 +15,7 @@ import resourses from "../features/resouces";
 import axios from "axios";
 import { Usercontext } from '../contexts/Usercontext';
 export default function Register() {
-  let [setuser,user]=useContext(Usercontext)
+  let [user,setuser]=useContext(Usercontext)
   console.log(user)
   
   let [currentsteps, setcurrentsteps] = useState(0);

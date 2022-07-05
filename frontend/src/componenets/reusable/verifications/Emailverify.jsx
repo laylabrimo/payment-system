@@ -26,8 +26,8 @@ export default function Emailverify({ setemailverified }) {
   let [verificationstarted, setverificationstarted] = useState(false);
   let [verificationcode, setverificationcode] = useState("");
   let [error, seterror] = useState("");
-  let [setuser,user]=useContext(Usercontext)
-  console.log(user)
+  let [user,setuser]=useContext(Usercontext)
+ 
   
   let [email, setemail] = useState("");
   let params = useParams();
@@ -36,21 +36,28 @@ export default function Emailverify({ setemailverified }) {
   useEffect(() => {
     let retrivetheuser = async () => {
       let token = params.id;
+      console.log(token)
       let Res = new resourses();
       Res.token = token;
+      console.log(Res.token)
+     
       let user = await Res.retriveuserbytoken();
-      setemail(user.data.user.data.email);
+      console.log(user)
+      console.log('reterever',user.data.data.userka)
+      setemail(user.data.data.userka.email);
     };
 
     retrivetheuser();
   }, []);
   useEffect(() => {
     let sendverificationcode = async () => {
+      console.log(email)
       let Res = new resourses();
       Res.verificationtype = "email";
       Res.email = email;
       let code = await Res.sendverificationcode();
-      setverificationcode(code.code);
+      console.log(code)
+      setverificationcode(code.otp);
     };
     sendverificationcode();
   }, [email]);
@@ -108,7 +115,7 @@ export default function Emailverify({ setemailverified }) {
             <TextField
               onChange={(x) => setusercode(x.currentTarget.value)}
               disabled={verificationstarted}
-              helperText={"we have sent 6 didgit code to your email " + email}
+              helperText={"we have sent 6 didgit code to your email "+email }
               fullWidth
               label="Enter the code here"
             />

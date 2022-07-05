@@ -1,11 +1,15 @@
-import { Avatar, Badge, Box, Typography } from '@mui/material';
+import { Avatar, Badge, Box, Typography, Button, TextField, Card, CardContent, CardHeader, CardActionArea, CardActions, Divider } from '@mui/material';
 import React from 'react'
-import { useContext } from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useContext, useState } from 'react';
 import { Usercontext } from '../contexts/Usercontext';
 import Popupyesno from './reusable/Popupyesno';
 import logo from '../images/logo-2.png'
 import diulogo from '../images/diu-logo.png'
+import LogoutIcon from '@mui/icons-material/Logout';
 import imran from '../images/imran.jpg'
+import CallReceivedIcon from '@mui/icons-material/CallReceived';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -23,137 +27,30 @@ import MoveUpIcon from '@mui/icons-material/MoveUp';
 import MoveDownIcon from '@mui/icons-material/MoveDown';
 import SecurityIcon from '@mui/icons-material/Security';
 import AppChart from './reusable/AppChart';
-
-
+import Boxes from './reusable/Boxes';
+import Resourses from '../features/resouces';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import Cardcom from './reusable/Cardcom';
+import CallMissedOutgoingIcon from '@mui/icons-material/CallMissedOutgoing';
+import ads from '../images/adv.png'
 export default function Home() {
+  let [showblance,setshowblance]=React.useState(true)
   let [user,setuser]=useContext(Usercontext)
-  let listitems=[
-    {name:'Dashboard',icon:<DashboardIcon/>},
-    {name:'Details',icon:<InfoIcon/>},
-    {name:'Money in',icon:<MoveDownIcon/>},
-    {name:'Money out',icon:<MoveUpIcon/>},
-    {name:'Blance',icon:<AttachMoneyIcon/>},
-    {name:'Account Security',icon:<SecurityIcon/>},
-    {name:'History',icon:<HistoryIcon/>},
-    {name:'Settings',icon:<SettingsIcon/>}
-   
-    
-    
-  ]
   return (
-   <Box className='wrapper' sx={{
-     width:'100vw',
-     height:'100vh',
-     background:'#f7f7ff',
-     display:'flex'
-   }}>
-<Box sx={{
-  flex:1,
-  display:'flex',
-  margin:'16px',
-  flexDirection:'column',
-  
-
-
-
-}}>
-  <Box sx={{
-    width:'100%',
-    height:'100px',
-    background:'white',
-    borderRadius:'10px',
-    margin:'10px',
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center'
-  }}>
-<img src={diulogo} width='200px' height='100px'/>    </Box>
-    <Box sx={{
-    width:'100%',
-    height:'70%',
-    background:'white',
-    borderRadius:'10px',
-    margin:'10px',
-   
-  }}>
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      
-      {listitems.map(item=>(
-        <ListItem onSelect={()=>{
-          alert('waaw')
-        }} sx={{
-          cursor:'pointer'
-        }}>
-          <ListItemAvatar >
-            <Avatar>
-              {item.icon}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={item.name}  />
-        </ListItem>
-      ))}
-    </List>
-
-    </Box>
-</Box>
-
-
-<Box sx={{
-  flex:6,
- margin:'16px',
-
- 
-
-}}>
-  <Box sx={{
-    width:'98%',
-    height:'100px',
-   
-    borderRadius:'10px',
-    margin:'10px',
-   
-    display:'flex',
-    justifyContent:'flex-end',
-    alignItems:'center'
-    
-  }}>
-    <Box sx={{
-      display:'flex',
-      justifyContent:'center',
-      alignItems:'center',
-      
-    }} className='user'>
-  
-       
-       
-   
-  <Avatar
-        alt="Remy Sharp"
-        src={imran}
-        sx={{ width: 56, height: 56 }}
-      />
-      <Box sx={{margin:'7px',}} >
-        <Typography  sx={{
-          fontWeight:'bold',
-          fontFamily:'monospace'
-        }} >{user.name}</Typography>
-        <Typography sx={{
-          fontWeight:'100',
-          fontFamily:'cursive'
-        }} variant='caption'>{user.email}</Typography>
-      </Box>
-
-    </Box>
-    
-      
-  </Box>
-  <Box sx={{
+    <div>
+      <Sidebar>
+      <Box sx={{
       width:'100%',
       height:'150px',
       display:'flex',
       alignItems:'center',
-      padding:'10px'
+      padding:'10px',
+      margin:'20px'
     }}>
+    
    <Box sx={{
      display:'flex',
      width:'300px',
@@ -177,6 +74,79 @@ export default function Home() {
        fontWeight:'bold',
        padding:'22px'
      }}>BALANCE</Typography>
+     <Button onClick={()=>{
+       setshowblance(!showblance)
+     }} > {showblance?<VisibilityOffIcon   color='action' sx={{ padding:'22px',cursor:'pointer'}}/>: <VisibilityIcon   color='action' sx={{ padding:'22px',cursor:'pointer'}}/> }</Button>
+     
+    
+      
+     
+     </Box>
+     
+     <Box sx={{
+       display:'flex',
+       width:'100%',
+       height:'35%',
+       flexDirection:'column'
+       
+     }}>
+     <Typography sx={{
+       color:'black',
+       fontSize:'40px',
+       fontWeight:'bold',
+       padding:'22px'
+     }}>$ {showblance?user.finanaces.blance:'***'}{showblance?'.':''}<span style={{
+       color:'blue'
+     }}>{showblance?'00':'**'}</span></Typography>
+     
+     
+     </Box>
+     <Box sx={{
+       display:'flex',
+       width:'100%',
+       height:'35%',
+       flexDirection:'column'
+       
+     }}>
+     <Typography sx={{
+       color:'#c6c6c6',
+       fontSize:'15px',
+       fontWeight:'bold',
+       padding:'22px',
+       letterSpacing:'4px'
+     }}>updated now </Typography>
+     
+     
+     </Box>
+    
+
+
+   </Box>
+   
+   <Box sx={{
+     display:'flex',
+     width:'300px',
+     height:'200px',
+     background:'white',
+     borderRadius:'9px',
+     flexDirection:'column',
+     margin:'9px'
+   }} >
+     <Box sx={{
+       display:'flex',
+       width:'100%',
+       height:'35%',
+       justifyContent:'space-between',
+       
+      
+       
+     }}>
+     <Typography sx={{
+       color:'black',
+       fontSize:'20px',
+       fontWeight:'bold',
+       padding:'22px'
+     }}>Today's Income</Typography>
       <InfoIcon color='action' sx={{ padding:'22px'}}/>
      
     
@@ -196,9 +166,9 @@ export default function Home() {
        fontSize:'40px',
        fontWeight:'bold',
        padding:'22px'
-     }}>$ 130.<span style={{
-       color:'blue'
-     }}>89</span></Typography>
+     }}>$0.<span style={{
+       color:'dodgerblue'
+     }}>00</span></Typography>
      
      
      </Box>
@@ -219,66 +189,210 @@ export default function Home() {
      
      
      </Box>
+     
     
-
+  
 
    </Box>
-    <Box sx={{
-     display:'flex',
-     width:'300px',
+   
+   <Box sx={{
+     width:'600px',
      height:'200px',
-     background:'white',
-     borderRadius:'9px',
-     flexDirection:'column'
-   }} >
-     <Box sx={{
-       display:'flex',
-       width:'100%',
-       height:'35%',
-       justifyContent:'space-between',
-       
-      
-       
-     }}>
-     <Typography sx={{
-       color:'black',
-       fontSize:'20px',
-       fontWeight:'bold',
-       padding:'22px'
-     }}>BALANCE</Typography>
-      <InfoIcon color='action' sx={{ padding:'22px'}}/>
+     display:'flex',
+     justifyContent:'center',
+     alignItems:'center',
+     background:'#f7f7ff'
+   }}>
      
+     <Box>
+  <Cardcom/>
+  </Box>
     
-      
-     
-     </Box>
-     
-    
-     <Box sx={{
-       display:'flex',
-       width:'100%',
-       height:'35%',
-       flexDirection:'column'
-       
-     }}>
-     <Typography sx={{
-       color:'#c6c6c6',
-       fontSize:'15px',
-       fontWeight:'bold',
-       padding:'22px',
-       letterSpacing:'4px'
-     }}>updated now </Typography>
-     
-     
-     </Box>
-    
-
-
    </Box>
-   <AppChart/>
+   <Box sx={{
+ 
+ display:'flex',
+  width:'350px',
+  height:'750px',
+  background:'white',
+  borderRadius:'9px',
+  flexDirection:'column',
+  
+  margin:'9px',
+  marginTop:'560px',
+}}>
+<Box sx={{
+  width:'350px',
+  height:'100px',
+ 
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center',
+  flexDirection:'column'
+}}>
+<Typography sx={{fontSize:'18px',fontWeight:'bold'}}>-Sponsred-</Typography>
+</Box>
+<Divider/>
+<Box sx={{
+  width:'350px',
+  height:'650px',
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center',
+  flexDirection:'column',
+  borderRadius:'10px'
+}}>
+   <img src={ads} width='350px'/>
+
+
+</Box>
+<Divider/>
+<Box sx={{
+  width:'350px',
+  height:'200px',
+  
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center',
+  flexDirection:'column',
+  borderRadius:'16px'
+}}>
+  <img style={{
+    borderRadius:'15px'
+  }} src='https://diu.ac/front/images/about/campus.jpg' width='350px'/>
+
+</Box>
+
+
+
+</Box>
+
+    </Box>
+    
+    <Box sx={{padding:'10px', display:'flex'}}>
+    <Boxes width={600} height={200} margin={10} title='Total Request Recieved' ammount={user.finanaces.requests.in.length} updated='updated 19 sec ago' />
+    
+    <Card sx={{
+     width:'600px',
+     height:'200px',
+     borderRadius:'9px',
+
+     margin:'10px'
+   }}>
+     <CardHeader title='Request money'/>
+     
+     <CardContent>
+     <TextField  autoComplete='off' variant='standard' sx={{marginRight:'8px'}} placeholder='Account Number/Email'/>
+     <TextField  type='number' variant='standard'  autoComplete='off' placeholder='Enter the ammount'/>
+     </CardContent>
+     <Button sx={{margin:'11px'}} color='success' variant='contained'>Send money request</Button>
+   </Card>
+
     </Box>
   
-</Box>
+
+
+  <Box sx={{
+    width:'100vw',
+    height:'200px',
+    borderRadius:'9px',
+    display:'flex',
+   
+    margin:'10px'
+  }}>
+    <Box >
+     <Card sx={{
+      width:'600px',
+      borderRadius:'20px'
+    }}>
+     <CardHeader title='Recent Transactions'/>
+     <CardContent>
+     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      
+     
+     <ListItem sx={{
+        background:'#cf6161',
+        borderRadius:'7px',
+        color:'white',
+        margin:'7px'
+      }} >
+        <ListItemAvatar >
+          <Avatar sx={{ background:'white'}}>
+            <CallMissedOutgoingIcon sx={{
+              color:'red'
+            }}/>
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText  primary='$ 80'  secondary='To Ubeid nur hirey on 25-july-2022'  />
+      </ListItem> <ListItem sx={{
+        background:'#43a380',
+        borderRadius:'7px',
+        color:'white',
+        margin:'7px'
+      }} >
+        <ListItemAvatar >
+          <Avatar sx={{ background:'white'}}>
+            <CallReceivedIcon sx={{
+              color:'green'
+            }}/>
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText  primary='$80'  secondary='from Ubeid nur hirey on 25-july-2022'  />
+      </ListItem>
+      <ListItem sx={{
+        background:'#43a380',
+        borderRadius:'7px',
+        color:'white',
+        margin:'7px'
+      }} >
+        <ListItemAvatar >
+          <Avatar sx={{ background:'white'}}>
+            <CallReceivedIcon sx={{
+              color:'green'
+            }}/>
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText  primary='$600'  secondary='from maan nur hirey on 25-july-2022'  />
+      </ListItem>
+     
+      
+  
+     
+  </List>
+  
+     </CardContent>
+     
+   </Card>
+  
    </Box>
+ 
+  <Box sx={
+    {
+      width:'600px',
+      height:'200px',
+      background:'white',
+     marginLeft:'40px',
+      borderRadius:'15px',
+     
+
+    }
+  }>
+<Card sx={{
+  borderRadius:'15px',
+
+}}>
+  <CardHeader title='your spendings figure'/>
+<AppChart/>
+</Card>
+
+  </Box>
+  
+
+  </Box>
+
+      </Sidebar>
+     
+     
+    </div>
   )
 }

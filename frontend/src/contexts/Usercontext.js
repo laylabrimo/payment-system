@@ -13,14 +13,20 @@ export const Userprofider=(props)=>{
             console.log('getting user',res.data)
             if(!res.data.data.email){
                 setuser(null)
+                console.log('stting the user as null')
                 
             }
             else{
+               let usertoken=localStorage.getItem('accesstoken')
                resources.token=usertoken
                resources.refreshtoken()
                let respond=await resources.retriveuserbytoken()
-               let user=respond.data.userka
+               console.log('respondhiga waa',respond)
+               let user=respond.data.data.userka
+               console.log('jee adag',user)
               setuser(user)
+              console.log('dhinaa kalaa loo soo gudbay')
+              console.log('kadib userka waa',user)
             }
             
         }

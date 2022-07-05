@@ -1,12 +1,13 @@
 import { Box, TextField } from '@mui/material'
 import React from 'react'
 
-export default function Appinputfield({label,helperText,name,onchange,value,id,ref,key,type,error}) {
+export default function Appinputfield({label,helperText,name,onchange,value,id,ref,key,type,error,placeholder}) {
   return (
     <Box>
          <TextField 
          type={type}
          onChange={onchange}
+         placeholder={placeholder}
          ref={ref}
          id={id}
          value={value}

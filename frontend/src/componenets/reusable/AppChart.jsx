@@ -26,6 +26,7 @@ export default function AppChart() {
             display: true,
             text: 'Chart.js Bar Chart - Stacked',
           },
+          
         },
         responsive: true,
         scales: {
@@ -60,7 +61,10 @@ export default function AppChart() {
           },
         ],
       };
-      return <Bar options={options} data={data} />;
+      return <Bar width='500px' style={{
+        background:'white',
+        padding:'10px'
+      }} height='200px' options={options} data={data} />;
 }
 
 
