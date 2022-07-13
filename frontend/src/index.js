@@ -6,9 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import { Userprofider } from './contexts/Usercontext';
 import Faceverification from './componenets/reusable/verifications/Faceverification';
 import { Auth0Provider } from '@auth0/auth0-react';
+import Appsnackbar from './componenets/reusable/AppSnackbar';
+import { Snackprofider } from './contexts/Snackbarcontext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Snackprofider>
+
+ 
   <Userprofider>
     <Auth0Provider
     domain="dev-2fa6ipdc.us.auth0.com"
@@ -20,6 +25,7 @@ root.render(
     <App />
   </Auth0Provider>,
   </Userprofider>
+  </Snackprofider>
  
   
    

@@ -7,6 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import resourses from '../../../features/resouces';
+import { Alert, LinearProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function Addpaymentmethodpopup({setopen,open}) {
  
@@ -16,19 +18,36 @@ export default function Addpaymentmethodpopup({setopen,open}) {
   const [expy,setexpy]=React.useState('')
   const [cvc,setcvc]=React.useState('')
   const [zip,setzip]=React.useState('')
+  const [loading,setloading]=React.useState(false)
+  const [error,seterror]=React.useState('')
 
 
+  let navigate= useNavigate()
 
 
- let handlesubmit=(event)=>{
+ let handlesubmit=async(event)=>{
   event.preventDefault();
-  
+  setloading(true)
  let data={
    name,cardnumber,expm,expy,cvc,zip
  }
  let Res= new resourses()
- let res = Res.addpaymentmethod(data)
- console.log(res)
+ let res = await Res.addpaymentmethod(data)
+ console.log('from add payment',res.data)
+ setloading(false)
+ let error=res.data.error
+ let ok=res.data.msg
+ error?seterror(error):setopen(false)
+
+ console.log(error?error:ok)
+ if (!error){
+  setTimeout(() => {
+    window.location.reload()
+  }, 100);
+ }
+ 
+
+
  }
 
   const handleClose = () => {
@@ -41,9 +60,13 @@ export default function Addpaymentmethodpopup({setopen,open}) {
       <Dialog sx={{
         borderRadius:'20px'
       }} open={open}  onClose={handleClose}>
+       {loading &&  <LinearProgress/>}
+       {error && <Alert severity='error'>{error}</Alert>}
+       
         <DialogTitle>Add Your Card</DialogTitle>
         <form onSubmit={handlesubmit}>
         <DialogContent>
+
           <DialogContentText>
            we will keep your card in seure servers 
           </DialogContentText>

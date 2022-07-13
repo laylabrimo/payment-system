@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const verifyuser = require("../resources/verifyuser");
 connectdatabase;
 
+
 router.post("/", async(req, res) => {
   let { email, number, password } = req.body.data;
   console.log(req.body.data)
@@ -20,14 +21,16 @@ router.post("/", async(req, res) => {
   }
 
   if (loginmethod) {
-    let user= await User.findOne(loginmethod=='email'?{email:email}:{phone_number:number})
-    if(user && user.password==password){
+    let userka= await User.findOne(loginmethod=='email'?{email:email}:{phone_number:number})
+    .then((user)=>{
+      if(user && user.password==password){
         
         let data={
           email:user.email
         }
+        console.log('datada la xirayo marka loginka lasamenayo nayo waa ',data)
        
-        let accesstoken= jwt.sign(data,'verystrongsecretkey',{expiresIn:'60s'})
+        let accesstoken= jwt.sign(data,'verystrongsecretkey')
         let refreshtoken= jwt.sign(data,'verystrongsecretkey')
         var myquery = { email: user.email };
         var newvalues = { $set: {security: {accesstoken:accesstoken,refreshtoken:refreshtoken}} };
@@ -48,6 +51,12 @@ router.post("/", async(req, res) => {
     else{
         res.status(401).json('no user with that credentials')
     }
+
+    })
+    .catch(e=>{
+      console.log(e.message)
+    })
+   
   }
 });
 

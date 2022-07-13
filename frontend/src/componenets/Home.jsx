@@ -36,11 +36,15 @@ import Sidebar from './Sidebar';
 import Cardcom from './reusable/Cardcom';
 import CallMissedOutgoingIcon from '@mui/icons-material/CallMissedOutgoing';
 import ads from '../images/adv.png'
+import Botomnavigate from './Buttomnavigation';
 export default function Home() {
   let [showblance,setshowblance]=React.useState(true)
   let [user,setuser]=useContext(Usercontext)
+  let paymentmethods=user.finanaces.payment_methods
+
   return (
     <div>
+      
       <Sidebar>
       <Box sx={{
       width:'100%',
@@ -166,7 +170,7 @@ export default function Home() {
        fontSize:'40px',
        fontWeight:'bold',
        padding:'22px'
-     }}>$0.<span style={{
+     }}>$230.<span style={{
        color:'dodgerblue'
      }}>00</span></Typography>
      
@@ -270,7 +274,7 @@ export default function Home() {
     </Box>
     
     <Box sx={{padding:'10px', display:'flex'}}>
-    <Boxes width={600} height={200} margin={10} title='Total Request Recieved' ammount={user.finanaces.requests.in.length} updated='updated 19 sec ago' />
+    <Boxes width={600} height={200} margin={10} title='Total Request Recieved' ammount={200} updated='updated 19 sec ago' />
     
     <Card sx={{
      width:'600px',
@@ -384,12 +388,11 @@ export default function Home() {
   <CardHeader title='your spendings figure'/>
 <AppChart/>
 </Card>
-
   </Box>
   
 
   </Box>
-
+ 
       </Sidebar>
      
      

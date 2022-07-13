@@ -14,6 +14,7 @@ export const Userprofider=(props)=>{
             if(!res.data.data.email){
                 setuser(null)
                 console.log('stting the user as null')
+                localStorage.removeItem('accesstoken')
                 
             }
             else{

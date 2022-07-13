@@ -2,9 +2,12 @@ import { Alert, AlertTitle, Box, Button, ButtonGroup, InputAdornment, OutlinedIn
 import React, { useContext, useState } from 'react'
 import { Usercontext } from '../../contexts/Usercontext'
 import Sidebar from '../Sidebar'
+import resourses from '../../features/resouces';
 
 export default function Recharge() {
     let [user,setuser]=useContext(Usercontext)
+    let [ammount,setammount]=useState(0)
+
     console.log(user)
     let [error,seterror]=useState('')
     function Recahrcheform(){
@@ -12,22 +15,17 @@ export default function Recharge() {
             <>
             <TextField sx={{
                 margin:'12px'
-            }}  disabled  label='account name' value={user.finanaces.acc} placeholder='Your Account Number'/>
+            }}  disabled  label='account Number' value={user.finanaces.acc} placeholder='Your Account Number'/>
             <TextField sx={{
                 margin:'12px'
-            }}  disabled  label='account name' value={user.name} placeholder='Your Account Name'/>
+            }}  disabled  label='account Name' value={user.name} placeholder='Your Account Name'/>
             <OutlinedInput
             sx={{
                 margin:'12px',
                 fontSize:'20px'
             }}
             id="outlined-adornment-amount"
-            
-            onChange={(x)=>{
-                if(x.currentTarget.value>user.finanaces.blance){
-                    seterror('you dont have enough blance')
-                }
-            }}
+            defaultValue={ammount}
             placeholder='Enter the amount'
             autoFocus
             error={error?true:false}
@@ -73,14 +71,24 @@ export default function Recharge() {
            <ButtonGroup sx={{
                margin:'12px'
            }}>
-                <Button>$10</Button>
-                <Button>$50</Button>
-                <Button>$100</Button>
-                <Button>$500</Button>
+                <Button onClick={()=>setammount(10)}>$10</Button>
+                <Button onClick={()=>setammount(50)}>$50</Button>
+                <Button onClick={()=>setammount(100)}>$100</Button>
+                <Button onClick={()=>setammount(500)}>$500</Button>
+                <Button onClick={()=>setammount('')}>default</Button>
             </ButtonGroup>
-            <Button sx={{
+            <Button onClick={async()=>{
+                let Res=new resourses()
+                let depositdata={
+                    ammount:ammount,
+                    acc:user.finanaces.acc
+
+                }
+                let res=await Res.deposit(depositdata)
+                console.log(res)
+            }} sx={{
                 margin:'9px'
-            }} disabled={user.finanaces.payment_methods.length==0?true:false} variant='contained' >Recharge $170</Button>
+            }} disabled={user.finanaces.payment_methods.length==0?true:false} variant='contained' >Deposit ${ammount}</Button>
           
                {user.finanaces.payment_methods.length<=0 &&
                

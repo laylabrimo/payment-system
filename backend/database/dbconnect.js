@@ -6,13 +6,13 @@ mongoose.connect(url,
     useUnifiedTopology: true
   }
 )
-.catch(er=>{
-    console.log(er)
-})
-
 .then(()=>{
     console.log('connnected')
 })
+.catch(er=>{
+  console.log(er)
+})
 
-console.log(url)
+
+
 module.exports= mongoose

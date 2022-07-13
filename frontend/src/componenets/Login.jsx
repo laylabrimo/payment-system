@@ -9,8 +9,10 @@ import logo from '../images/diu-logo.png'
 function Login() {
   let [username,setusername]=useState(null)
   let [password,setpassword]=useState(null)
+  let [loading,setloading]=useState(false)
   let handlesubmit=(e)=>{
     e.preventDefault()
+    setloading(true)
     let data={
       email:username,
       password:password
@@ -19,11 +21,12 @@ function Login() {
     console.log(data)
     let resources= new Resourses()
     resources.login(data)
-    resources.logged=true
+    setloading(false)
     
 
 
   }
+  
   return (
 
   <Box sx={{
@@ -34,7 +37,9 @@ function Login() {
     alignItems:'center'
   }}>
     <Card sx={{width:'600px',height:'400px'}}>
-      <img src={logo} width='200px' />
+      <img src={logo} width='200px' style={{
+        padding:'12px'
+      }} />
       <CardHeader title='Login'/>
       <CardContent>
       <form onSubmit={handlesubmit}>
@@ -45,6 +50,9 @@ function Login() {
             setpassword(e.target.value)
           }} name='password' placeholder='enter your password'/>
          <Button variant='contained' type='submit'>login</Button>
+         {loading && <>
+         <h1>hello</h1>
+         </>}
         </form>
         
       </CardContent>

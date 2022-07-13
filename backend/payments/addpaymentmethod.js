@@ -5,7 +5,8 @@ const stripe = require('stripe')(stripetk)
 let addpaymenmethod=async(data)=>{
   let err=''
   let resp=''
-    const paymentMethod = await stripe.paymentMethods.create({
+  console.log('in ad method',data)
+   await stripe.paymentMethods.create({
         type: 'card',
         card: {
          
@@ -13,21 +14,27 @@ let addpaymenmethod=async(data)=>{
           exp_month: data.expm,
           exp_year: data.expy,
           cvc: data.cvc,
+         
           
         },
+        billing_details:{
+          name:data.name
+        }
       }) 
       .then((res)=>{
         resp=res
       })
       .catch((e)=>{
-       err=e.message
+        throw new Error(e.message);
       })
+      console.log('kudarka ',err,resp)
   if (err){
     return err
   }
   else{
     return resp
   }
+  
 }
 
 

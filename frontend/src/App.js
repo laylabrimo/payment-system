@@ -21,6 +21,8 @@ import Loading from './componenets/reusable/loading';
 import {io} from 'socket.io-client'
 import Recharge from './componenets/payments/Recharge';
 import Paymentmethods from './componenets/payments/paymentmethods';
+import { Snackcontext } from './contexts/Snackbarcontext';
+import Appsnackbar from './componenets/reusable/AppSnackbar';
 const socket=io('http://localhost:4000')
 
 
@@ -28,6 +30,8 @@ const socket=io('http://localhost:4000')
 
 function App() {
   let [user,setuser]=useContext(Usercontext)
+  let [message,setmessage]=useContext(Snackcontext)
+  
   console.log('from bilaw',user)
   let userka= user?true:false
  
@@ -38,6 +42,7 @@ function App() {
   
   return (
     <>
+    {message && <Appsnackbar message={message}/>}
      <BrowserRouter>
     <Routes>
      

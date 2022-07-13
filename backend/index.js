@@ -19,6 +19,9 @@ const detectlabels = require("./aws/detectlablels");
 const {Server} =require('socket.io')
 let http=require('http');
 const addpaymenmethod = require("./payments/addpaymentmethod");
+const assignpaymentmethodtouser = require("./payments/Asignuserpaymentmethod");
+const removepaymentmethod = require("./payments/removepaymentmethod");
+const deposit = require("./payments/deposit");
 let server=http.createServer(app)
 const io= new Server(server,{
   cors:{
@@ -166,10 +169,13 @@ app.post("/sendverificationcode", async (req, res) => {
 });
 app.post("/generate-verification-link", async (req, res) => {
   console.log('waa lii imaaday')
-  let payload = {
-    data: req.body.data,
+  let data = {
+    email: req.body.data.email
   };
-  let token = jwt.sign(payload, "verystrongsecretkey", { expiresIn: "60m" });
+  
+  console.log('datada la xirayo marka la verify gareenayo  waa ',data)
+
+  let token = jwt.sign(data, "verystrongsecretkey", { expiresIn: "60m" });
   let link = "http://localhost:3000/" + token;
   res.json({
     link: token,
@@ -209,13 +215,59 @@ app.post("/refreshtoken", async (req, res) => {
   }
 });
 app.post('/addpm',async(req,res)=>{
-  console.log('ok',req.body.data)
-addpaymenmethod(req.body.data)
-.then((resp)=>{
-  console.log(resp)
+  let user=req.body.user.data.data.userka
+  if (user!=='undefined'){
+   await addpaymenmethod(req.body.data)
+   .then(async(paymentmethodid)=>{
+     console.log('waa halkaan',paymentmethodid,user.cus_id)
+     await assignpaymentmethodtouser(paymentmethodid,user.cus_id)
+     .then((x)=>{
+       res.json({
+         msg:'success'
+       })
+
+     })
+     .catch((e)=>{
+       console.log('erroraa jiro',e.message)
+       res.json({
+        error:e.message
+      })
+     })
+
+   })
+   .catch((e)=>{
+     console.log('in kudar method ',e.message)
+    res.json({
+      error:e.message
+    })
+     
+   })
+
+  }
+  else{
+    console.log('user can not be retrived',user)
+  }
+  
+  
 })
-  
-  
+app.post('/deposit',(req,res)=>{
+  deposit(req.body)
+
+})
+app.post('/rmpm',async(req,res)=>{
+  let id=req.body.data
+  let user=req.body.user.data.data.userka
+  if (user && id){
+    let resp= await removepaymentmethod(id,user)
+    console.log(resp)
+
+  }
+  else{
+    res.send({
+      error:'error'
+    })
+  }
+ 
 })
 })
 

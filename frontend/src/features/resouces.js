@@ -12,7 +12,7 @@ export default class resourses {
   token = "";
   refreshtoken = "";
   login = async (data) => {
-  
+  axios.defaults.baseURL='http:/192.168.1.103:4000/'
     //  call http end point
    try {
     await axios.post("http://localhost:4000/login", { data }).then((res) => {
@@ -113,9 +113,25 @@ export default class resourses {
     this.token=access_token
     let user= await this.retriveuserbytoken()
     console.log('add payment method',user)
-    let res= await axios.post('http://localhost:4000/addpm',{data:data})
-    console.log(res)
+    let res= await axios.post('http://localhost:4000/addpm',{data:data,user:user})
+    return res
 
+
+  }
+  removepaymentmethod=async(id)=>{
+    let access_token = localStorage.getItem("accesstoken");
+    this.token=access_token
+    let user= await this.retriveuserbytoken()
+    let res= await axios.post('http://localhost:4000/rmpm',{data:id,user:user})
+    return res
+
+  }
+  deposit=async(depositinfo)=>{
+    let access_token = localStorage.getItem("accesstoken");
+    this.token=access_token
+    let user= await this.retriveuserbytoken()
+    let res= await axios.post('http://localhost:4000/deposit',{depositinfo,user:user})
+    return res
 
   }
 }
