@@ -33,15 +33,19 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import { useNavigate } from 'react-router-dom';
+import { SendOutlined } from '@mui/icons-material';
+import Areyousure from './payments/popups/Areyousure';
 
 export default function Sidebar(props) {
   let [showblance,setshowblance]=React.useState(true)
   let [user,setuser]=useContext(Usercontext)
+  let [logout,setlogout]=useState(false)
   let [dashboardselcted,setdashboardselcted]=useState(false)
   let navigate=useNavigate()
   let listitems=[
     {name:'Dashboard',icon:<DashboardIcon/>,selected:dashboardselcted,path:'/'},
-    {name:'Blance',icon:<AccountBalanceWalletIcon/>,selected:false,path:'/blance'},
+    {name:'Account',icon:<AccountBalanceWalletIcon/>,selected:false,path:'/myaccount'},
+    {name:'Send money',icon:<SendOutlined/>,selected:false,path:'/sendmoney'},
     {name:'Recharge',icon:<MoveDownIcon/>,selected:false,path:'/recharge'},
     {name:'Account Security',icon:<SecurityIcon/>,selected:false,path:'/security'},
     {name:'History',icon:<HistoryIcon/>,selected:false,path:'/history'},
@@ -53,6 +57,7 @@ export default function Sidebar(props) {
     
   ]
   return (
+   
    <Box className='wrapper' sx={{
      width:'100vw',
      height:'100vh',
@@ -146,8 +151,7 @@ export default function Sidebar(props) {
   margin:'9px'
 }}/>
  <Button onClick={()=>{
-   let resourses= new Resourses()
-   resourses.logout()
+  setlogout(true)
 
  }}>
  <Typography  sx={{
@@ -167,7 +171,7 @@ export default function Sidebar(props) {
 
 }}>
   <Box sx={{
-    width:'98%',
+    width:'80%',
     height:'100px',
    
     borderRadius:'10px',
@@ -211,7 +215,10 @@ export default function Sidebar(props) {
 
 {props.children}
    
-
+{logout && <Areyousure bodytext='if you logout you need to enter to credentials again' setopen={setlogout} headingtext='are you sure to logout?' oktitle='sure' closetitle='oh no' handleaction={()=>{
+   let resourses= new Resourses()
+   resourses.logout()
+}} open={logout}/>}
 </Box>
 
 

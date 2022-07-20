@@ -8,23 +8,24 @@ import Faceverification from './componenets/reusable/verifications/Faceverificat
 import { Auth0Provider } from '@auth0/auth0-react';
 import Appsnackbar from './componenets/reusable/AppSnackbar';
 import { Snackprofider } from './contexts/Snackbarcontext';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Otpprofider } from './contexts/Otpcontext';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <Snackprofider>
 
- 
+ <Otpprofider>
+
+
   <Userprofider>
-    <Auth0Provider
-    domain="dev-2fa6ipdc.us.auth0.com"
-    cli="Sgoe0UYZfAqdR1m3ab51iD2bIZRex1Wg"
-    clientId='Sgoe0UYZfAqdR1m3ab51iD2bIZRex1Wg'
     
-    redirectUri={window.location.origin}
-  >
     <App />
-  </Auth0Provider>,
+  
   </Userprofider>
+  </Otpprofider>
   </Snackprofider>
  
   

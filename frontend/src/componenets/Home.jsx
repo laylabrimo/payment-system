@@ -37,6 +37,8 @@ import Cardcom from './reusable/Cardcom';
 import CallMissedOutgoingIcon from '@mui/icons-material/CallMissedOutgoing';
 import ads from '../images/adv.png'
 import Botomnavigate from './Buttomnavigation';
+import { Snackbar } from '@mui/material/Snackbar';
+import Notifications from './reusable/Notifications';
 export default function Home() {
   let [showblance,setshowblance]=React.useState(true)
   let [user,setuser]=useContext(Usercontext)
@@ -44,6 +46,7 @@ export default function Home() {
 
   return (
     <div>
+    
       
       <Sidebar>
       <Box sx={{

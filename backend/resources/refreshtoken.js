@@ -11,7 +11,7 @@ try {
       if (userka){
           let userpervrefreshtoken=userka.security.refreshtoken
         console.log('toenkii refrshka ahaay',userpervrefreshtoken)
-        let access_token=jwt.sign(data,'verystrongsecretkey',{expiresIn:'600s'})
+        let access_token=jwt.sign(data,'verystrongsecretkey',{expiresIn:'8000s'})
         let refresh_token=jwt.sign(data,'verystrongsecretkey')
         var myquery = { email: resp.email };
   

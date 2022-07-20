@@ -15,40 +15,66 @@ import Home from './componenets/Home';
 import Startprocess from './componenets/reusable/Startprocess';
 import Faceverification from './componenets/reusable/verifications/Faceverification';
 import Login from './componenets/Login';
-import { useContext } from 'react';
+import { useContext, useState, React, useEffect } from 'react';
 import { Usercontext } from './contexts/Usercontext';
 import Loading from './componenets/reusable/loading';
-import {io} from 'socket.io-client'
+
 import Recharge from './componenets/payments/Recharge';
 import Paymentmethods from './componenets/payments/paymentmethods';
 import { Snackcontext } from './contexts/Snackbarcontext';
 import Appsnackbar from './componenets/reusable/AppSnackbar';
-const socket=io('http://localhost:4000')
+import Sendmoney from './componenets/payments/Sendmoney';
+import { io } from 'socket.io-client';
+import Notifications from './componenets/reusable/Notifications';
+import useSound from "use-sound";
+import moneyrecieved from '../src/assets/moneyrecieved.wav'
+import Myaccount from './componenets/reusable/Myaccount';
+var socket = io('http://192.168.0.108:4000');
+
+
+
+
 
 
 
 
 function App() {
+
+
+  let [Recievedsound,setrecievedsound]=useSound(moneyrecieved)
   let [user,setuser]=useContext(Usercontext)
-  let [message,setmessage]=useContext(Snackcontext)
+  let [messagee,setmessagee]=useContext(Snackcontext)
+  let [message,setmessage]=useState('')
+
+  let [not,setnot]=useState(false)
+
+  socket.on('connect',()=>{
+    console.log('connecred ..')
+  })
+  socket.on('recievemoney',(payload)=>{
+   setmessage('waxaad $'+payload.amount+' ka heshay '+payload.name)
+   setnot(true)
+   Recievedsound()
+  
+  })
   
   console.log('from bilaw',user)
   let userka= user?true:false
  
-    socket.on('labadalay',(data)=>{
-      alert(data.codeka)
-  
-    })
   
   return (
     <>
-    {message && <Appsnackbar message={message}/>}
+  
+    {not && <Notifications message={message} not_open={not} setnot_open={setnot}/>}
+    
      <BrowserRouter>
     <Routes>
      
         
           <Route path="/" element={user=='null'?<Loading/>:user==null?<Login/>:<Home/>}/>
           <Route path="/recharge" element={user=='null'?<Loading/>:user==null?<Login/>:<Recharge/>}/>
+          <Route path="/myaccount" element={user=='null'?<Loading/>:user==null?<Login/>:<Myaccount/>}/>
+          <Route path="/sendmoney" element={user=='null'?<Loading/>:user==null?<Login/>:<Sendmoney/>}/>
           <Route path="/pm" element={user=='null'?<Loading/>:user==null?<Login/>:<Paymentmethods/>}/>
           <Route path="/card" element={user=='null'?<Loading/>:user==null?<Login/>:<Paymentmethods/>}/>
 

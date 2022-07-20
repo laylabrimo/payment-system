@@ -5,11 +5,17 @@ import { useRef } from 'react';
 import Resourses from '../features/resouces';
 import Appinputfield from './reusable/Appinputfield';
 import logo from '../images/diu-logo.png'
-
+import useSound from "use-sound";
+import login from '../assets/login.mp3'
 function Login() {
+
   let [username,setusername]=useState(null)
   let [password,setpassword]=useState(null)
   let [loading,setloading]=useState(false)
+  let [LoginSound]=useSound(login)
+  React.useEffect(()=>{
+    LoginSound()
+  },[LoginSound])
   let handlesubmit=(e)=>{
     e.preventDefault()
     setloading(true)
@@ -45,7 +51,7 @@ function Login() {
       <form onSubmit={handlesubmit}>
           <Appinputfield onchange={(e)=>{
             setusername(e.target.value)
-          }} type='text' name='email or number' placeholder='enteremail or number'/>
+          }} type='email'  name='email or number' placeholder='enteremail or number'/>
           <Appinputfield type='password' onchange={(e)=>{
             setpassword(e.target.value)
           }} name='password' placeholder='enter your password'/>

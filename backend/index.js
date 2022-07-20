@@ -16,27 +16,48 @@ const sendcode = require("./resources/sendcode");
 const sendemailthroughemail = require("../backend/sendcode_email");
 const saveImage = require("./resources/uploadfilefrombase64");
 const detectlabels = require("./aws/detectlablels");
-const {Server} =require('socket.io')
 let http=require('http');
+let server=http.createServer(app)
+const io = require('socket.io')(server, {cors: {origin: "*"}});
+app.use(cors({
+  origin:'*'
+}))
+
+
 const addpaymenmethod = require("./payments/addpaymentmethod");
 const assignpaymentmethodtouser = require("./payments/Asignuserpaymentmethod");
 const removepaymentmethod = require("./payments/removepaymentmethod");
 const deposit = require("./payments/deposit");
-let server=http.createServer(app)
-const io= new Server(server,{
-  cors:{
-    origin:'*'
-  }
+const sendmoney = require('./payments/sendmoney')
+const { now } = require("mongoose");
+const sendcodethroughemail = require("../backend/sendcode_email");
+
+app.get('/hellobro',(req,res)=>{
+  res.send('hi')
+})
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
 })
 
-io.on('connection',(socket)=>{
-  console.log('someone connected ',socket.id)
- 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
+io.on('connection',(soket)=>{
+  
+  console.log('someone connected ',soket.id)
+  soket.on('sentmoney',async(payload)=>{
+    console.log(payload)
+    let user=payload
+    let touser=user.to.user
+    let fromuser=user.from.user
+    let userka= await users.findOne({cus_id:touser.cus_id})
+    console.log('userka loo diray ',userka)
+    io.emit('recievemoney',{name:fromuser.name,amount:payload.amount})
   })
-);
+ 
+
+  
+
+
 app.use(bodyparser({}));
 app.use("/login", login);
 app.use("/register", register);
@@ -75,6 +96,7 @@ function makeid(length) {
   return result;
 }
 app.post("/retriveuserbytoken", async (req, res) => {
+  
   let token = req.body.token;
   console.log('halkaanw axaa lagu soo dabacay',token)
   try {
@@ -98,7 +120,10 @@ app.post("/retriveuserbytoken", async (req, res) => {
   }
 });
 app.post("/changevercode", (req, res) => {
+  console.log('badloo aa bilaabay')
   let s = req.body;
+  console.log('ssssss waaa ',s)
+  
   let otp=makeid(6)
   console.log(otp)
   var myquery = { email: s.email };
@@ -107,12 +132,26 @@ app.post("/changevercode", (req, res) => {
           if (err){
             console.log(err)
           }
-          socket.emit('labadalay',{codeka:otp})
-          console.log(res)
+          return 'ok'
+         
+          
 
+        })
+        res.json({
+          data:otp
         })
 
 });
+app.post('/checkotp',async(req,res)=>{
+  let inputotp=req.body.otp
+  let user=req.body.user.data.data.userka
+  let userka=await users.findOne({cus_id:user.cus_id})
+  let requiredotp=userka.resources.oto
+  console.log(inputotp,requiredotp)
+
+})
+
+
 app.post("/sendverificationcode", async (req, res) => {
   let data= req.body.data
   console.log(data)
@@ -123,6 +162,7 @@ app.post("/sendverificationcode", async (req, res) => {
      if(haveotp==null){
        console.log('generate otp')
        let otp=makeid(6)
+       sendcodethroughemail(user.name,user.email,otp)
        //update the otp
        var myquery = { email: data.email };
         var newvalues = { $set: {refrences: {otp:otp}} };
@@ -139,6 +179,7 @@ app.post("/sendverificationcode", async (req, res) => {
      }
      else{
       let otp=user.refrences.otp
+      sendcodethroughemail(user.name,user.email,otp)
       res.json({
         otp
       })
@@ -184,26 +225,32 @@ app.post("/generate-verification-link", async (req, res) => {
 app.post("/uploadfaces", (req, res) => {
   let filename = saveImage(req.body.link);
 
-  detectlabels("/faces/" + filename).then((x) => {
-    let facescore = 0;
-    x.map((n) => {
-      if (n.name == "Face" && n.confidence > 99) {
-        facescore = facescore + 1;
-      } else {
-        facescore = facescore;
-      }
-    });
-    console.log(facescore);
-    if (facescore == 1) {
-      res.json({
-        data: "ok",
-      });
-    } else {
-      res.json({
-        data: "notok",
-      });
-    }
-  });
+  // detectlabels("/faces/" + filename).then((x) => {
+  //   let facescore = 0;
+  //   x.map((n) => {
+  //     if (n.name == "Face" && n.confidence > 99) {
+  //       facescore = facescore + 1;
+  //     } else {
+  //       facescore = facescore;
+  //     }
+  //   });
+  //   console.log(facescore);
+  //   if (facescore == 1) {
+  //     res.json({
+  //       data: "ok",
+  //     });
+  //   } else {
+  //     res.json({
+  //       data: "notok",
+  //     });
+  //   }
+  // });
+  setTimeout(() => {
+    res.json({
+      data:'ok'
+    })
+    
+  }, 4000);
 });
 app.post("/refreshtoken", async (req, res) => {
   let token = req.body.token;
@@ -217,10 +264,10 @@ app.post("/refreshtoken", async (req, res) => {
 app.post('/addpm',async(req,res)=>{
   let user=req.body.user.data.data.userka
   if (user!=='undefined'){
-   await addpaymenmethod(req.body.data)
-   .then(async(paymentmethodid)=>{
-     console.log('waa halkaan',paymentmethodid,user.cus_id)
-     await assignpaymentmethodtouser(paymentmethodid,user.cus_id)
+   await addpaymenmethod(req.body.data,req.body)
+   .then(async(data)=>{
+    
+     await assignpaymentmethodtouser(data,user)
      .then((x)=>{
        res.json({
          msg:'success'
@@ -250,11 +297,166 @@ app.post('/addpm',async(req,res)=>{
   
   
 })
-app.post('/deposit',(req,res)=>{
-  deposit(req.body)
+app.post('/deposit',async(req,res)=>{
+  try {
+    let resp=await deposit(req.body)
+    res.json({
+      type:'success',
+      message:resp
+    })
+  } catch (error) {
+    res.json({
+      type:'error',
+      message:error.message
+    })
+  }
+  
+  
+  
+
 
 })
-app.post('/rmpm',async(req,res)=>{
+app.post('/setdpm',async(req,res)=>{
+  // card_req= kaarka laga dihayo
+  // card_db = kaarka laga dhigayo from db
+  // user_req = userka from req
+  // user_db = userka from db
+  // pcard = kii horay u ahaa
+ 
+  let user_req=req.body.user.data.data.userka // user from request
+  let user_db = await users.findOne({cus_id:user_req.cus_id}) // user from database
+  let card_req= req.body.card  // caarka laga dhigayo default from request
+  let card_db=user_db.finanaces.payment_methods.find(x=>x.id==card_req.id) // // caarka laga dhigayo default from database
+  let cards=user_db.finanaces.payment_methods
+  let kaarka={cards}
+  let index_of_card_db=cards.indexOf(card_db)
+  // make the requested card true
+  console.log('objectiga ',kaarka)
+  let pcard=null
+  cards.map(x=>{
+    return x.card.metadata.default=='true'?pcard=x:null
+  })
+  let indexpcard=cards.indexOf(pcard)
+ 
+  
+
+
+  if (pcard!=null){
+    // ......... TESTING STAFF ...........
+  //
+  kaarka.cards[index_of_card_db].card.metadata.default='true'
+  //
+  kaarka.cards[indexpcard].card.metadata.default='false'
+
+  // ........... END ....................
+  }
+  else{
+      kaarka.cards[index_of_card_db].card.metadata.default='true'
+
+
+  }
+ // check if there is previous default pm
+
+   //update it => true->false
+   var newvalues = { $set: {'finanaces.payment_methods':cards} };
+   try {
+    let resp=await users.findOneAndUpdate({cus_id:user_req.cus_id},newvalues)
+    res.json({
+      msg:'succcessfully updated'
+    })
+   } catch (error) {
+     res.json({
+       msg:error.message
+     })
+     
+   }
+   console.log('after menapulation complete: origin=> ',kaarka.cards[index_of_card_db].card.metadata.default+' prefious=> ',kaarka.cards[indexpcard].card.metadata.default)
+
+
+
+  
+  
+  })
+ 
+
+
+
+
+
+  app.post('/sendmoney',async(req,res)=>{
+   console.log('okk sending now',req.body)
+   let to_user=req.body.sendinfo.to_acc
+   console.log('to user',to_user)
+   let from_user=req.body.user.data.data.userka
+   console.log('from ',from_user)
+   if(from_user.cus_id==to_user.cus_id){
+     res.json({
+       msg:'same'
+     })
+     
+   }
+   else{
+     let fromuser=await users.findOne({cus_id:from_user.cus_id})
+     let touser=await users.findOne({cus_id:to_user.cus_id})
+     let fromuserblance=fromuser.finanaces.blance
+     let touserblance=to_user.finanaces.blance
+     let ammounttosend=req.body.sendinfo.ammount
+     let fromuserblance_after_detucting=parseInt(fromuserblance)-parseInt(ammounttosend)
+     let touserblanceafteradding=parseInt(touserblance)+parseInt(ammounttosend)
+     
+    if (fromuserblance<ammounttosend){
+      res.json({
+        msg:'error blance'
+      })
+    }
+    else{
+
+     // update from user blance
+     var myquery = { cus_id: from_user.cus_id };
+     var newvalues = { $set: {'finanaces.blance': fromuserblance_after_detucting} };       
+      users.findOneAndUpdate(myquery,newvalues,(err,res)=>{
+          if (err){
+            console.log(err)
+          }
+          console.log(res)
+        })
+
+
+     // update to user blance
+     var myquery = { cus_id: to_user.cus_id };
+     var newvalues = { $set: {'finanaces.blance': touserblanceafteradding} };       
+      users.findOneAndUpdate(myquery,newvalues,(err,res)=>{
+          if (err){
+            console.log(err)
+          }
+          console.log(res)
+        })
+    }
+    res.json({
+      msg:'success'
+    })
+
+   }
+
+
+  })
+  app.post('/findaccountinfo',async(req,res)=>{
+    let acc=req.body.acc
+    try {
+      let user= await users.find({'finanaces.acc':acc})
+      res.json({
+        msg:user
+      })
+    } catch (error) {
+      res.json({
+        msg:'error'
+      })
+      
+    }
+    
+  // let user=await users.findOne({'finan'})
+  })
+  app.post('/rmpm',async(req,res)=>{
   let id=req.body.data
   let user=req.body.user.data.data.userka
   if (user && id){

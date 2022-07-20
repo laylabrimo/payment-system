@@ -69,7 +69,7 @@ export default function Documentverification({setdocumentverified}) {
     formdata.append("filename",filenamee)
    try {
     const res = await axios.post(
-      "http://localhost:4000/upload",
+      "http://192.168.0.108:4000/upload",
       formdata
     );
     let code= res.data.code

@@ -72,43 +72,62 @@ const detectlabels = require("../aws/detectlablels");
 
 // document checker an other try while the first try is fieled
 let isdocument = async (filename) => {
-  let isdocumentwithfacescore = 0;
-  let isdocumentwithoutfacescore = 0;
-  let result = null;
+  // let isdocumentwithfacescore = 0;
+  // let isdocumentwithoutfacescore = 0;
+  // let result = null;
 
-  await detectlabels(filename).then((labels) => {
-    labels.map((x) => {
-      if (
-        x.name == "Document" ||
-        x.name == "Passport" ||
-        x.name == "Id Cards"
-      ) {
-        isdocumentwithoutfacescore = isdocumentwithoutfacescore + 1;
-      } else {
-        isdocumentwithoutfacescore = isdocumentwithoutfacescore;
-      }
-      if (x.name == "Human" || x.name == "Person") {
-        isdocumentwithfacescore = isdocumentwithfacescore + 1;
-      } else {
-        isdocumentwithfacescore = isdocumentwithfacescore;
-      }
-    });
+  // await detectlabels(filename).then((labels) => {
+  //   labels.map((x) => {
+  //     if (
+  //       x.name == "Document" ||
+  //       x.name == "Passport" ||
+  //       x.name == "Id Cards"
+  //     ) {
+  //       isdocumentwithoutfacescore = isdocumentwithoutfacescore + 1;
+  //     } else {
+  //       isdocumentwithoutfacescore = isdocumentwithoutfacescore;
+  //     }
+  //     if (x.name == "Human" || x.name == "Person") {
+  //       isdocumentwithfacescore = isdocumentwithfacescore + 1;
+  //     } else {
+  //       isdocumentwithfacescore = isdocumentwithfacescore;
+  //     }
+  //   });
 
-    if (isdocumentwithfacescore == 0 && isdocumentwithoutfacescore == 0) {
-      result = 0;
-    } else {
-      if (isdocumentwithfacescore >= 2 && isdocumentwithoutfacescore >= 2) {
-        result = 1;
-      } else {
-        if (isdocumentwithfacescore == 0 && isdocumentwithoutfacescore > 0) {
-          result = 0.5;
-        } else {
-          result = 2;
-        }
-      }
-    }
-  });
-  return result; // 1 good document 0 bad document 0.5 good document but face not detected 2 only face detected
+  //   if (isdocumentwithfacescore == 0 && isdocumentwithoutfacescore == 0) {
+  //     result = 0;
+  //   } else {
+  //     if (isdocumentwithfacescore >= 2 && isdocumentwithoutfacescore >= 2) {
+  //       result = 1;
+  //     } else {
+  //       if (isdocumentwithfacescore == 0 && isdocumentwithoutfacescore > 0) {
+  //         result = 0.5;
+  //       } else {
+  //         result = 2;
+  //       }
+  //     }
+  //   }
+  // });
+  return 1// let isdocumentwithfacescore = 0;
+  // let isdocumentwithoutfacescore = 0;
+  // let result = null;
+
+  // await detectlabels(filename).then((labels) => {
+  //   labels.map((x) => {
+  //     if (
+  //       x.name == "Document" ||
+  //       x.name == "Passport" ||
+  //       x.name == "Id Cards"
+  //     ) {
+  //       isdocumentwithoutfacescore = isdocumentwithoutfacescore + 1;
+  //     } else {
+  //       isdocumentwithoutfacescore = isdocumentwithoutfacescore;
+  //     }
+  //     if (x.name == "Human" || x.name == "Person") {
+  //       isdocumentwithfacescore = isdocumentwithfacescore + 1;
+  //     } else {
+  //       isdocumentwithfacescore = isdocumentwithfacescore;
+  //     }; // 1 good document 0 bad document 0.5 good document but face not detected 2 only face detected
 };
 
 module.exports=isdocument

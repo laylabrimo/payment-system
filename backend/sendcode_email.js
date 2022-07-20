@@ -41,9 +41,9 @@ let sendcodethroughemail=(name,email,code)=>{
     // trigger the sending of the E-mail
     transporter.sendMail(mailOptions, function(error, info){
         if(error){
-            return console.log(error);
+           console.log(error.message);
         }
-        console.log('Message sent: ' + info.response);
-    });
+        console.log('Message sent: to ' +email+ " and code is "+code +""+ info.response );
+    })
 }
 module.exports= sendcodethroughemail

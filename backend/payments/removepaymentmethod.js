@@ -1,5 +1,5 @@
 let Users=require('../database/schemas/regstrationSchema')
-let stripetk=''
+let stripetk='sk_test_51JR57rBuBMeuylpxvr07UaSS8EfkIztqkqzd9fWDTfKCqgC92I0vVDYCuMx29V5AJYLXiqnuGHdJWoYw7sSWG6yj00RoAASRop'
 const stripe = require('stripe')(stripetk)
 
 let removepaymentmethod=async(id,user)=>{
@@ -11,17 +11,15 @@ let removepaymentmethod=async(id,user)=>{
     console.log('after prefining ',predifinedpm)
     predifinedpm.map(x=>predifinedpm.pop(x.id==id))
     console.log('after deleting ',predifinedpm)
-    var newvalues = { $set: {finanaces: {
-      payment_methods:
-        predifinedpm
-      }} };
+    var newvalues = { $set: {'finanaces.payment_methods':predifinedpm} };
 
-    Users.findOneAndUpdate(myquery,newvalues,(err,res)=>{
-      if (err){
-        console.log(err)
-      }
-      console.log(res)
-    })
+
+      Users.findOneAndUpdate(myquery,newvalues,(err,res)=>{
+        if (err){
+          console.log(err)
+        }
+        console.log(res)
+      })
    
 }
 
