@@ -94,6 +94,12 @@ let navigate=useNavigate()
             setpassword(e.target.value)
           }} name='password' placeholder='enter your password'/>
          <Button disabled={loading} sx={{marginBottom:'15px'}} variant='contained' type='submit'>login</Button>
+         <Button>Don't have account?</Button>
+         <Button onClick={()=>{
+                window.location.replace('/register')
+              }} size="small" color="secondary">
+                Register
+              </Button>
          {error && <Alert severity='error' >{error}</Alert>}
          {success && <Alert severity='success' >{success}</Alert>}
          {loading && <>

@@ -71,7 +71,7 @@ const Hero = ({
                 </p>
               <div className="reveal-from-bottom" data-reveal-delay="600">
                 <ButtonGroup>
-                  <Button tag="a" color="primary" wideMobile  href="http://192.168.0.20:3000">
+                  <Button tag="a" color="primary" wideMobile  href="http://68.183.246.197:3000/register">
                     Get started
                     </Button>
                   <Button tag="a" color="dark" wideMobile href="https://github.com/imranhirey">

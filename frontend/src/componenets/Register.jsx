@@ -225,7 +225,9 @@ export default function Register() {
               }}
             >
               <Button>Already have account?</Button>
-              <Button size="small" color="secondary">
+              <Button onClick={()=>{
+                window.location.replace('/login')
+              }} size="small" color="secondary">
                 Sign in
               </Button>
             </Box>
