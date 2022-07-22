@@ -1,5 +1,4 @@
 const express = require("express");
-const { type } = require("serverless/lib/config-schema");
 const router = express.Router();
 let connectdatabase = require("../database/dbconnect");
 let User = require("../database/schemas/regstrationSchema");
