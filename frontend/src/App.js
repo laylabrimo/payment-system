@@ -77,11 +77,37 @@ console.log(user)
   console.log('from bilaw',user)
   let userka= user?true:false
  
-  
+  if (window.innerWidth<1600){
+    return(
+      <Box sx={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+        width:'100vw',
+        height:'100vh',
+        flexDirection:'column'
+      }}>
+     <Typography sx={{
+       padding:'16px',
+       fontSize:'30px',
+       fontWeight:'bold'
+     }}>OOPS! SORRY FOR DISTURBING RIGHT NOW WE ARE COMPATIABLE WITH YOUR DEVICE</Typography>
+     <Typography sx={{
+       padding:'16px',
+       fontSize:'20px',
+       fontWeight:'bold',
+       color:'dodgerblue'
+     }}>OUR TEAM ARE WORKING HARD TO FIX THIS ISSUE</Typography>
+    
+      </Box>
+     
+    )
+  }
   return (
     <>
   
     {not && <Notifications message={message} not_open={not} setnot_open={setnot}/>}
+   
     <Offline>
        
        <Box sx={{
