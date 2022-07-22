@@ -42,6 +42,7 @@ router.post("/", async (req, res) => {
     let user = new User({
       name: fullname,
       cus_id: getuser.id,
+      contacts:[],
       email: email,
       phone_number: phonenumber,
       password: password1,

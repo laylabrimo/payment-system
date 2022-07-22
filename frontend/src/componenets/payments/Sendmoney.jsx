@@ -32,7 +32,7 @@ import {
   import Swal from "sweetalert2";
 
   export default function Sendmoney() {
-    var socket = io('http://192.168.0.108:4000');
+    var socket = io('http://68.183.246.197:4000');
     let to_acc=''
     let [touser,settouser]=React.useState(null)
     let [playSuccess] = useSound(playsucess);
@@ -45,9 +45,11 @@ import {
     let [loading, setloading] = useState(false);
     let [confirmopen, setconfirmopen] = useState(false);
     let [otpneeded,setotpneeded]=useState(false)
-    socket.on('connect',()=>{
-      console.log('connecred ..')
-    })
+ 
+      socket.on('connect',()=>{
+        console.log('connecred ..')
+      })
+  
     
     
     let dpm = null;

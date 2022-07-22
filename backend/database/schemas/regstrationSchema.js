@@ -18,6 +18,9 @@ const regstrationSchema = new schema({
   password: {
     type: String,
   },
+  contacts:{
+    type:Array
+  },
   birthdate:{
     type:Date
   },

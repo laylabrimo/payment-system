@@ -51,5 +51,5 @@ if (verifyface){
   return <Faceverification setfaceverified={setfaceverified}/>
 }
  
-  return <h1>everything is finished</h1>
+ window.location.replace('/login')
 }

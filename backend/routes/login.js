@@ -17,7 +17,7 @@ router.post("/", async(req, res) => {
   } else if (number && password) {
     loginmethod = "number";
   } else {
-    res.status(402).json("incomplete credentials");
+    res.status(401).json("incomplete credentials");
   }
 
   if (loginmethod) {
@@ -49,7 +49,9 @@ router.post("/", async(req, res) => {
         
     }
     else{
-        res.status(401).json('no user with that credentials')
+        res.json({
+          status:'notfound'
+        })
     }
 
     })

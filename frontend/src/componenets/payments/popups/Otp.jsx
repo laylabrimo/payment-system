@@ -107,7 +107,7 @@ let checkotp=async()=>{
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={checkotp}>
+          <Button disabled={!otp} variant="primary" onClick={checkotp}>
             Verify
           </Button>
         </Modal.Footer>

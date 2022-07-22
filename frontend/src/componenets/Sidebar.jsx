@@ -35,6 +35,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import { useNavigate } from 'react-router-dom';
 import { SendOutlined } from '@mui/icons-material';
 import Areyousure from './payments/popups/Areyousure';
+import ContactsIcon from '@mui/icons-material/Contacts';
 
 export default function Sidebar(props) {
   let [showblance,setshowblance]=React.useState(true)
@@ -47,11 +48,13 @@ export default function Sidebar(props) {
     {name:'Account',icon:<AccountBalanceWalletIcon/>,selected:false,path:'/myaccount'},
     {name:'Send money',icon:<SendOutlined/>,selected:false,path:'/sendmoney'},
     {name:'Recharge',icon:<MoveDownIcon/>,selected:false,path:'/recharge'},
+    {name:'My contacts',icon:<ContactsIcon/>,selected:false,path:'/mycontacts'},
     {name:'Account Security',icon:<SecurityIcon/>,selected:false,path:'/security'},
     {name:'History',icon:<HistoryIcon/>,selected:false,path:'/history'},
     {name:'Payment Methods',icon:<CreditCardIcon/>,selected:false,path:'/pm'},
     {name:'My donation account',icon:<VolunteerActivismIcon/>,selected:false,path:'/doations'},
-    {name:'Settings',icon:<SettingsIcon/>,selected:false,path:'/settings'}
+    {name:'Settings',icon:<SettingsIcon/>,selected:false,path:'/settings'},
+    
    
     
     
@@ -62,13 +65,17 @@ export default function Sidebar(props) {
      width:'100vw',
      height:'100vh',
      background:'#f7f7ff',
-     display:'flex'
+     display:'flex',
+     
+     
    }}>
 <Box sx={{
   flex:1,
   display:'flex',
   margin:'16px',
   flexDirection:'column',
+ 
+  
   
 
 
@@ -83,7 +90,10 @@ export default function Sidebar(props) {
     display:'flex',
     justifyContent:'center',
     alignItems:'center',
-    padding:'8px'
+    padding:'8px',
+    
+   
+
   }}>
 <img src={diulogo} width='200px' height='100px'/>    </Box>
     <Box sx={{
@@ -92,19 +102,22 @@ export default function Sidebar(props) {
     background:'white',
     borderRadius:'10px',
     margin:'10px',
-    padding:'8px'
+    padding:'8px',
+  
    
   }}>
     <List  sx={{
+      position:'fixed',
     // selected and (selected + hover) states
     '&& .Mui-selected, && .Mui-selected:hover': {
       bgcolor: 'dodgerblue',
       '&, & .MuiListItemIcon-root': {
         color: 'white',
-        borderRadius:'12px'
+        borderRadius:'12px',
+
       },
     },
-    // hover states
+    // hover states 
     '& .MuiListItemButton-root:hover': {
       bgcolor: 'orange',
       '&, & .MuiListItemIcon-root': {
@@ -172,8 +185,7 @@ export default function Sidebar(props) {
 }}>
   <Box sx={{
     width:'80%',
-    height:'100px',
-   
+    height:'50px',
     borderRadius:'10px',
     margin:'10px',
    
@@ -182,33 +194,6 @@ export default function Sidebar(props) {
     alignItems:'center'
     
   }}>
-    <Box sx={{
-      display:'flex',
-      justifyContent:'center',
-      alignItems:'center',
-      
-    }} className='user'>
-  
-       
-       
-   
-  <Avatar
-        alt="Remy Sharp"
-        src={imran}
-        sx={{ width: 56, height: 56 }}
-      />
-      <Box sx={{margin:'7px',}} >
-        <Typography  sx={{
-          fontWeight:'bold',
-          fontFamily:'monospace'
-        }} >{user.name}</Typography>
-        <Typography sx={{
-          fontWeight:'100',
-          fontFamily:'cursive'
-        }} variant='caption'>{user.email}</Typography>
-      </Box>
-
-    </Box>
     
       
   </Box>

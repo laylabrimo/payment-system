@@ -4,8 +4,8 @@ var fs = require("fs");
 let getkeys=require('../config')
 const s3Config =  new AWS.Config({
   credentials:{
-    accessKeyId:'',
-    secretAccessKey:'',
+    accessKeyId:'AKIAUYIO7HOVPG7HTEPR',
+    secretAccessKey:'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',
     
   },
 

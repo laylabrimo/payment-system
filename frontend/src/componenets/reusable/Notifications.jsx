@@ -25,9 +25,7 @@ export default function Notifications({message,not_open,setnot_open}) {
 
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
-      <Button variant="outlined" onClick={handleClick}>
-        Open success snackbar
-      </Button>
+     
       <Snackbar open={not_open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
        {message}

@@ -1,48 +1,86 @@
 import React, { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
-import { Box, Button, Card, CardContent, CardHeader, TextField } from '@mui/material';
+import { Alert, Box, Button, Card, CardContent, CardHeader, LinearProgress, TextField } from '@mui/material';
 import { useRef } from 'react';
 import Resourses from '../features/resouces';
 import Appinputfield from './reusable/Appinputfield';
 import logo from '../images/diu-logo.png'
 import useSound from "use-sound";
 import login from '../assets/login.mp3'
+import { useNavigate } from 'react-router-dom';
 function Login() {
-
+let navigate=useNavigate()
   let [username,setusername]=useState(null)
   let [password,setpassword]=useState(null)
   let [loading,setloading]=useState(false)
+  let [error,seterror]=useState('')
+  let [success,setsuccess]=useState('')
   let [LoginSound]=useSound(login)
   React.useEffect(()=>{
     LoginSound()
   },[LoginSound])
-  let handlesubmit=(e)=>{
+  let handlesubmit=async(e)=>{
     e.preventDefault()
-    setloading(true)
+   setloading(true)
     let data={
       email:username,
       password:password
 
     }
-    console.log(data)
-    let resources= new Resourses()
-    resources.login(data)
+    if (data.email && data.password){
+      try {
+      let resources= new Resourses()
+      let res=await resources.login(data)
+      console.log('jawaab',res)
+      if(res.data.status=='notfound'){
+        seterror('we can not find a user with that credentials')
+        setloading(false)
+      } 
+      else{
+       seterror('')
+       setsuccess('sucess redirecting ....')
+       setloading(false)
+       setTimeout(() => {
+         window.location.reload()
+         
+       }, 1000);
+        
+      }
+      } catch (error) {
+        seterror(error.message)
+        setloading(false)
+        
+      }
+      
+    
+  }
+   else{
     setloading(false)
+    seterror('Both fields are reuired')
+    setTimeout(() => {
+      seterror('')
+    }, 2000);
+   }
+  
     
 
 
   }
   
   return (
+<>
 
-  <Box sx={{
+<Box sx={{
     display:'flex',
     width:'100vw',
     height:'100vh',
     justifyContent:'center',
     alignItems:'center'
   }}>
-    <Card sx={{width:'600px',height:'400px'}}>
+    
+    
+    <Card sx={{width:'700px',height:'500px'}}>
+    
       <img src={logo} width='200px' style={{
         padding:'12px'
       }} />
@@ -55,15 +93,21 @@ function Login() {
           <Appinputfield type='password' onchange={(e)=>{
             setpassword(e.target.value)
           }} name='password' placeholder='enter your password'/>
-         <Button variant='contained' type='submit'>login</Button>
+         <Button disabled={loading} sx={{marginBottom:'15px'}} variant='contained' type='submit'>login</Button>
+         {error && <Alert severity='error' >{error}</Alert>}
+         {success && <Alert severity='success' >{success}</Alert>}
          {loading && <>
-         <h1>hello</h1>
+        <LinearProgress/>
          </>}
         </form>
         
       </CardContent>
+      
     </Card>
+    
   </Box>
+</>
+  
     // <div>Login 
     //     <form onSubmit={handlesubmit}>
     //       <input ref={username} type='text' name='email or number' placeholder='enteremail or number'/>
