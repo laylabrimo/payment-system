@@ -14,7 +14,7 @@ export default class resourses {
   login = async (data) => {
     //  call http end point
   
-    let res=await axios.post("http://68.183.246.197:4000/login", { data })
+    let res=await axios.post("http://localhost:4000/login", { data })
     
       if (res){
         localStorage.setItem("accesstoken", res.data.accesstoken);
@@ -39,7 +39,7 @@ export default class resourses {
       email: this.email,
     };
     let res = await axios.post(
-      "http://68.183.246.197:4000/generate-verification-link",
+      "http://localhost:4000/generate-verification-link",
       { data }
     );
     return res.data;
@@ -50,7 +50,7 @@ export default class resourses {
       token: access_token,
     };
     console.log(data);
-    let res = await axios.post("http://68.183.246.197:4000/verifytoken", { data });
+    let res = await axios.post("http://localhost:4000/verifytoken", { data });
     return res;
   };
 
@@ -59,7 +59,7 @@ export default class resourses {
    
     if (this.verificationtype === "email") {
       console.log("qeybta emailka");
-      let res = await axios.post("http://68.183.246.197:4000/sendverificationcode", {
+      let res = await axios.post("http://localhost:4000/sendverificationcode", {
         data: { email: this.email, vertype: "email" },
       });
 
@@ -67,7 +67,7 @@ export default class resourses {
     }
     if (this.verificationtype === "number") {
       console.log("qeybta numberka");
-      let res = await axios.post("http://68.183.246.197:4000/sendverificationcode", {
+      let res = await axios.post("http://localhost:4000/sendverificationcode", {
         data: { number: this.phonenumber, vertype: "number" },
       });
 
@@ -77,7 +77,7 @@ export default class resourses {
   };
   changevercode = async () => {
    
-    let res = await axios.post("http://68.183.246.197:4000/changevercode", {
+    let res = await axios.post("http://localhost:4000/changevercode", {
         email:this.email,
       });
       return res
@@ -86,7 +86,7 @@ export default class resourses {
   };
 
   retriveuserbytoken = async () => {
-    let user = await axios.post("http://68.183.246.197:4000/retriveuserbytoken", {
+    let user = await axios.post("http://localhost:4000/retriveuserbytoken", {
       token: this.token,
     });
     console.log('in retrive user by token',user,this.token)
@@ -96,7 +96,7 @@ export default class resourses {
     console.log("refreshing the token ....");
     let access_token = localStorage.getItem("accesstoken");
     console.log("akses tokenka waa ", access_token);
-    let res = await axios.post("http://68.183.246.197:4000/refreshtoken", {
+    let res = await axios.post("http://localhost:4000/refreshtoken", {
       token: access_token,
     });
     let isok=res.data.access_token
@@ -113,7 +113,7 @@ export default class resourses {
     this.token=access_token
     let user= await this.retriveuserbytoken()
     console.log('add payment method',user)
-    let res= await axios.post('http://68.183.246.197:4000/addpm',{data:data,user:user})
+    let res= await axios.post('http://localhost:4000/addpm',{data:data,user:user})
     return res
 
 
@@ -122,7 +122,7 @@ export default class resourses {
     let access_token = localStorage.getItem("accesstoken");
     this.token=access_token
     let user= await this.retriveuserbytoken()
-    let res= await axios.post('http://68.183.246.197:4000/rmpm',{data:id,user:user})
+    let res= await axios.post('http://localhost:4000/rmpm',{data:id,user:user})
     return res
 
   }
@@ -130,7 +130,7 @@ export default class resourses {
     let access_token = localStorage.getItem("accesstoken");
     this.token=access_token
     let user= await this.retriveuserbytoken()
-    let res= await axios.post('http://68.183.246.197:4000/deposit',{depositinfo,user:user})
+    let res= await axios.post('http://localhost:4000/deposit',{depositinfo,user:user})
     return res
 
   }
@@ -138,7 +138,7 @@ export default class resourses {
     let access_token = localStorage.getItem("accesstoken");
     this.token=access_token
     let user= await this.retriveuserbytoken()
-    let res= await axios.post('http://68.183.246.197:4000/sendmoney',{sendinfo,user:user})
+    let res= await axios.post('http://localhost:4000/sendmoney',{sendinfo,user:user})
     return res
 
   }
@@ -146,17 +146,17 @@ export default class resourses {
     let access_token = localStorage.getItem("accesstoken");
     this.token=access_token
     let user= await this.retriveuserbytoken()
-    let res= await axios.post('http://68.183.246.197:4000/setdpm',{card,user})
+    let res= await axios.post('http://localhost:4000/setdpm',{card,user})
     return res
 
   }
   finduseraccountinfo=async(acc)=>{
     console.log('hadaa diraa')
-    let res= await axios.post('http://68.183.246.197:4000/findaccountinfo',{acc,acc})
+    let res= await axios.post('http://localhost:4000/findaccountinfo',{acc,acc})
     return res
   }
   getmytransactions=async(cusid)=>{
-    let res= await axios.post('http://68.183.246.197:4000/getmytrx',{cusid})
+    let res= await axios.post('http://localhost:4000/getmytrx',{cusid})
     return res
 
   }
@@ -164,7 +164,7 @@ export default class resourses {
     let access_token = localStorage.getItem("accesstoken");
     this.token=access_token
     let user= await this.retriveuserbytoken()
-    let res= await axios.post('http://68.183.246.197:4000/checkotp',{otp,user})
+    let res= await axios.post('http://localhost:4000/checkotp',{otp,user})
     return res
     
   }

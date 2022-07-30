@@ -32,7 +32,7 @@ import {
   import Swal from "sweetalert2";
 
   export default function Sendmoney() {
-    var socket = io('http://68.183.246.197:4000');
+    var socket = io('http://localhost:4000');
     let to_acc=''
     let [touser,settouser]=React.useState(null)
     let [playSuccess] = useSound(playsucess);
@@ -288,7 +288,7 @@ import {
                 confirmopen={confirmopen}
                 setconfirmopen={setconfirmopen}
                 title={
-                  `Are You sure you want recharge your account with $` + ammount
+                  `Are You sure you want send $` + ammount+ ' to'+touser.name
                 }
                 handleaction={async()=>{
                   setconfirmopen(false)
@@ -315,7 +315,7 @@ import {
               }
               variant="contained"
             >
-              Deposit ${ammount}
+              Send ${ammount}
             </Button>
   
             {user.finanaces.payment_methods.length <= 0 && (

@@ -7,8 +7,12 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Sidebar from '../Sidebar';
+import { Usercontext } from '../../contexts/Usercontext';
+
 
 export default function Mycontacts() {
+  let [userka,setuserka]=React.useContext(Usercontext)
+  console.log('in contacts ',userka)
   return (
       <Sidebar>
     <List sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper',marginTop:'70px' }}>

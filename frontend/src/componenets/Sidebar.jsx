@@ -44,16 +44,16 @@ export default function Sidebar(props) {
   let [dashboardselcted,setdashboardselcted]=useState(false)
   let navigate=useNavigate()
   let listitems=[
-    {name:'Dashboard',icon:<DashboardIcon/>,selected:dashboardselcted,path:'/'},
-    {name:'Account',icon:<AccountBalanceWalletIcon/>,selected:false,path:'/myaccount'},
-    {name:'Send money',icon:<SendOutlined/>,selected:false,path:'/sendmoney'},
-    {name:'Recharge',icon:<MoveDownIcon/>,selected:false,path:'/recharge'},
-    {name:'My contacts',icon:<ContactsIcon/>,selected:false,path:'/mycontacts'},
-    {name:'Account Security',icon:<SecurityIcon/>,selected:false,path:'/security'},
-    {name:'History',icon:<HistoryIcon/>,selected:false,path:'/history'},
-    {name:'Payment Methods',icon:<CreditCardIcon/>,selected:false,path:'/pm'},
-    {name:'My donation account',icon:<VolunteerActivismIcon/>,selected:false,path:'/doations'},
-    {name:'Settings',icon:<SettingsIcon/>,selected:false,path:'/settings'},
+    {status:true,name:'Dashboard',icon:<DashboardIcon/>,selected:dashboardselcted,path:'/'},
+    {status:true,name:'Account',icon:<AccountBalanceWalletIcon/>,selected:false,path:'/myaccount'},
+    {status:true,name:'Send money',icon:<SendOutlined/>,selected:false,path:'/sendmoney'},
+    {status:true,name:'Recharge',icon:<MoveDownIcon/>,selected:false,path:'/recharge'},
+    {status:true,name:'My contacts',icon:<ContactsIcon/>,selected:false,path:'/mycontacts'},
+    {status:true,name:'Account Security',icon:<SecurityIcon/>,selected:false,path:'/security'},
+    {status:true,name:'History',icon:<HistoryIcon/>,selected:false,path:'/history'},
+    {status:true,name:'Payment Methods',icon:<CreditCardIcon/>,selected:false,path:'/pm'},
+    {status:false,name:'My donation account',icon:<VolunteerActivismIcon/>,selected:false,path:'/'},
+    {status:false,name:'Settings',icon:<SettingsIcon/>,selected:false,path:'/'},
     
    
     
@@ -127,7 +127,7 @@ export default function Sidebar(props) {
   }}>
       
       {listitems.map(item=>(
-        <ListItem onClick={()=>{
+        <ListItem disabled={!item.status} onClick={()=>{
             window.location.replace(item.path)
             
         }} selected={item.selected} onSelect={()=>{
@@ -141,6 +141,7 @@ export default function Sidebar(props) {
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={item.name}  />
+          
         </ListItem>
         
       ))}

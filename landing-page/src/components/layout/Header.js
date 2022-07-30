@@ -121,7 +121,7 @@ const Header = ({
                       className="list-reset header-nav-right"
                     >
                       <li>
-                       <a className="button button-primary button-wide-mobile button-sm" href='http://68.183.246.197:3000/register' >SIGN UP</a>
+                       <a className="button button-primary button-wide-mobile button-sm" href='http://localhost:3000/register' >LOGIN</a>
                       </li>
                     </ul>}
                 </div>

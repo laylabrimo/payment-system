@@ -39,7 +39,7 @@ import Sidebar from '../src/componenets/Sidebar'
 import Errorpage from './componenets/reusable/Errorpage';
 
 
-var socket = io('http://68.183.246.197:4000');
+var socket = io('http://localhost:4000');
 
 
 
@@ -77,32 +77,7 @@ console.log(user)
   console.log('from bilaw',user)
   let userka= user?true:false
  
-  if (window.innerWidth<1600){
-    return(
-      <Box sx={{
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        width:'100vw',
-        height:'100vh',
-        flexDirection:'column'
-      }}>
-     <Typography sx={{
-       padding:'16px',
-       fontSize:'30px',
-       fontWeight:'bold'
-     }}>OOPS! SORRY FOR DISTURBING RIGHT NOW WE ARE COMPATIABLE WITH YOUR DEVICE</Typography>
-     <Typography sx={{
-       padding:'16px',
-       fontSize:'20px',
-       fontWeight:'bold',
-       color:'dodgerblue'
-     }}>OUR TEAM ARE WORKING HARD TO FIX THIS ISSUE</Typography>
-    
-      </Box>
-     
-    )
-  }
+  
   return (
     <>
   

@@ -32,11 +32,11 @@ aria-labelledby="alert-dialog-title"
 aria-describedby="alert-dialog-description"
 >
 <DialogTitle id="alert-dialog-title">
-  {"Can kulmis group use your cookeis and location?"}
+  {"Can DIU use your cookeis and location?"}
 </DialogTitle>
 <DialogContent>
   <DialogContentText id="alert-dialog-description">
-    all kulmis group products use your cookies and location  to enhase the user
+    DIU WILL  use your cookies and location  to enhase the user
     experience and costomize your needs also cookies can be 
     used for protecting your account from maliacious hackers
   </DialogContentText>

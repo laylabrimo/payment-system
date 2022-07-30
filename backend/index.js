@@ -45,6 +45,7 @@ app.all("/*", function (req, res, next) {
   next();
 });
 
+
 io.on("connection", (soket) => {
   console.log("someone connected ", soket.id);
   soket.on("sentmoney", async (payload) => {
@@ -59,7 +60,6 @@ io.on("connection", (soket) => {
       amount: payload.amount,
     });
   });
-
   app.use(bodyparser({}));
   app.use("/login", login);
   app.use("/register", register);
@@ -449,6 +449,7 @@ io.on("connection", (soket) => {
       });
     }
   });
-});
+  });
+
 
 server.listen(4000);

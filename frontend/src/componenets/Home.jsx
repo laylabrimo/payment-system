@@ -168,14 +168,14 @@ export default function Home() {
        flexDirection:'column'
        
      }}>
-     <Typography sx={{
+    <Typography sx={{
        color:'black',
        fontSize:'40px',
        fontWeight:'bold',
        padding:'22px'
-     }}>$230.<span style={{
-       color:'dodgerblue'
-     }}>00</span></Typography>
+     }}>$ {showblance?user.finanaces.blance:'***'}{showblance?'.':''}<span style={{
+       color:'blue'
+     }}>{showblance?'00':'**'}</span></Typography>
      
      
      </Box>

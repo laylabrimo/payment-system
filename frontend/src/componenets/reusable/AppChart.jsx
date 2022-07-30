@@ -68,10 +68,14 @@
 // }
 
 import React from 'react'
+import {Doughnut} from 'react-chartjs-2'
 
 export default function AppChart() {
   return (
-    <div>AppChart</div>
+    <div  style={{
+      margin:'14px'
+
+    }}>here we will render charts and graphs</div>
   )
 }
 

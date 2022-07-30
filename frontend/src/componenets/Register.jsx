@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Alert, AlertTitle, Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import logo from "../images/logo.svg";
+import logo from '../images/diu-logo.png'
 import rocket from "../images/rocket.gif";
 import login from "../images/login.svg";
 import { Formik } from "formik";
@@ -82,7 +82,7 @@ export default function Register() {
                     let res = await Resourses.getverificationlink();
                     let link = res.link;
                     let p=9
-                    let resp= await axios.post('http://68.183.246.197:4000/register',{user:values})
+                    let resp= await axios.post('http://localhost:4000/register',{user:values})
                      console.log(resp.data.msg)
                     if (resp.data.msg==='sorry user with this email already exist'){
                      seterrormessage('sorry user with this email already exist')
@@ -226,7 +226,7 @@ export default function Register() {
             >
               <Button>Already have account?</Button>
               <Button onClick={()=>{
-                window.location.replace('/login')
+                 window.location.replace('/login')
               }} size="small" color="secondary">
                 Sign in
               </Button>

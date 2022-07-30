@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
-import { Alert, Box, Button, Card, CardContent, CardHeader, LinearProgress, TextField } from '@mui/material';
+import { Alert, Box, Button, Card, CardContent, CardHeader, Divider, LinearProgress, TextField } from '@mui/material';
 import { useRef } from 'react';
 import Resourses from '../features/resouces';
 import Appinputfield from './reusable/Appinputfield';
 import logo from '../images/diu-logo.png'
+import loging from "../images/login.jpg";
+
 import useSound from "use-sound";
 import login from '../assets/login.mp3'
 import { useNavigate } from 'react-router-dom';
@@ -78,38 +80,61 @@ let navigate=useNavigate()
     alignItems:'center'
   }}>
     
+    <Box sx={{
+      flex:1,
+      margin:'10px'
+    }}>
+       <Card sx={{width:'700px',height:'500px'}}>
     
-    <Card sx={{width:'700px',height:'500px'}}>
-    
-      <img src={logo} width='200px' style={{
-        padding:'12px'
-      }} />
-      <CardHeader title='Login'/>
-      <CardContent>
-      <form onSubmit={handlesubmit}>
-          <Appinputfield onchange={(e)=>{
-            setusername(e.target.value)
-          }} type='email'  name='email or number' placeholder='enteremail or number'/>
-          <Appinputfield type='password' onchange={(e)=>{
-            setpassword(e.target.value)
-          }} name='password' placeholder='enter your password'/>
-         <Button disabled={loading} sx={{marginBottom:'15px'}} variant='contained' type='submit'>login</Button>
-         <Button>Don't have account?</Button>
-         <Button onClick={()=>{
-                window.location.replace('/register')
-              }} size="small" color="secondary">
-                Register
-              </Button>
-         {error && <Alert severity='error' >{error}</Alert>}
-         {success && <Alert severity='success' >{success}</Alert>}
-         {loading && <>
-        <LinearProgress/>
-         </>}
-        </form>
-        
-      </CardContent>
+    <img src={logo} width='200px' style={{
       
-    </Card>
+      margin:'12px'
+    }} />
+    <CardHeader title='Login'/>
+    <CardContent>
+    <form style={{
+      margin:'10px'
+    }} onSubmit={handlesubmit}>
+        <Appinputfield  onchange={(e)=>{
+          setusername(e.target.value)
+        }} type='email'  name='email or number' label='Email' placeholder='enteremail or number'/>
+        <Divider/>
+        <Appinputfield type='password' onchange={(e)=>{
+          setpassword(e.target.value)
+        }} name='password' label='password' placeholder='enter your password'/>
+       <Button disabled={loading} sx={{marginBottom:'15px'}} variant='contained' type='submit'>login</Button>
+      <Box>
+      <Button onClick={()=>{
+        window.location.replace('/register')
+      }}>
+        don't have an account
+      </Button>
+      </Box>
+       {error && <Alert severity='error' >{error}</Alert>}
+       {success && <Alert severity='success' >{success}</Alert>}
+       {loading && <>
+      <LinearProgress/>
+       </>}
+      </form>
+      
+    </CardContent>
+    
+  </Card>
+
+    </Box>
+    <Box 
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: { xs: "none", sm: "none", md: "flex" },
+        flex: 1.5,
+        justifyContent: "center",
+        margin:'14px'
+    
+    }}>
+<img src={loging}/>
+    </Box>
+   
     
   </Box>
 </>
