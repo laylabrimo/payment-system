@@ -1,5 +1,5 @@
-import { StyleSheet,  View,TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet,  View,TouchableOpacity,Alert } from 'react-native'
+import React, { useEffect,useState } from 'react'
 import { Divider, Image, Text } from 'native-base';
 import walleticon from '../../assets/icons/ewallet.png'
 import addicon from '../../assets/icons/add.png' 
@@ -13,7 +13,12 @@ import diupic from '../../assets/icons/diu.jpeg'
 import { useNavigation } from '@react-navigation/native';
 import {useContext} from 'react'
 import { Usercontext } from '../contexts/Usercontext';
+import resourses from '../../resouces';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {io} from  'socket.io-client'
+
+var socket = io('http://192.168.0.108:4000');
 
 
 
@@ -22,8 +27,27 @@ import { Usercontext } from '../contexts/Usercontext';
 
 const Home = () => {
   let [user,setuser]=useContext(Usercontext)
+  let [blance,setblance]=useState(user.finanaces.blance)
+  socket.on('connect',()=>{
+    console.log('connecred ..')
+  })
 
+  socket.on('updateblance'+user.cus_id,(payload)=>{
+console.log('from socket listening ',setblance(payload.newblance))  })
   let navigate=useNavigation()
+  useEffect(()=>{
+    navigate.addListener('focus',async()=>{
+      let Res=new resourses()
+      let usertoken=await AsyncStorage.getItem('accesstoken')
+      Res.token=usertoken
+      await Res.refreshtoken()
+      let respond=await Res.retriveuserbytoken()
+      let userka=respond.data.data.userka
+      setuser(userka)
+      
+      
+    })
+  },[])
   let features=[
     {id:1,name:'Send Money',icon:sendmoneyicon,route:'sendmoney'},
     {id:2,name:'Withdrow',icon:withdrowicon,route:'withdrow'},
@@ -59,7 +83,7 @@ const Home = () => {
             <Text style={{
               fontSize:20,
               color:'white'
-            }}>$ {user.finanaces.blance}.00</Text>
+            }}>$ {blance}.00</Text>
             <Text style={{
               fontSize:12,
               color:'#39ff12'

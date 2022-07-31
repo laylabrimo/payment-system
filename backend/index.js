@@ -403,6 +403,11 @@ io.on("connection", (soket) => {
           console.log(res);
         });
       }
+      let userblance=await users.findOne({cus_id:to_user.cus_id})
+      console.log('updating vie blance ',userblance.finanaces.blance)
+      io.emit("updateblance" + touser.cus_id, {
+        newblance:userblance.finanaces.blance
+      });
 
       res.json({
         msg: "success",

@@ -93,7 +93,6 @@ export default class resourses {
     let user = await axios.post("http://192.168.0.108:4000/retriveuserbytoken", {
       token: this.token,
     });
-    console.log('in retrive user by token',user,this.token)
     return user
   };
   refreshtoken = async () => {

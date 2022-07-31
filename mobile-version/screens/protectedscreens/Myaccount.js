@@ -13,6 +13,11 @@ const Myaccount = () => {
   return (
     <View>
       <Text>Myaccount</Text>
+      <Button onPress={()=>{
+        let Res=new resourses()
+        Res.logout()
+        setuser(null)
+      }}>logout</Button>
      
     
     </View>

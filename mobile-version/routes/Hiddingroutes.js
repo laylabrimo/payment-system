@@ -12,9 +12,7 @@ const Hiddingroutes = () => {
            <stack.Screen options={{
               headerShown:false
           }} name='home' component={Home}/>
-          <stack.Screen options={{
-              headerShown:false
-          }} name='sendmoney' component={Sendmoney}/>
+          
            <stack.Screen options={{
               headerShown:false
           }} name='savedcards' component={Savedcards}/>

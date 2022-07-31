@@ -11,6 +11,7 @@ import { Usercontext } from './contexts/Usercontext';
 import Loading from './Loading';
 import Myaccount from './protectedscreens/Myaccount';
 import MyTabs from '../routes/Tabs';
+import Sendmoney from './protectedscreens/Payments/Sendmoney';
 
 export default function Start() {
 
@@ -38,6 +39,9 @@ export default function Start() {
     }}>
        <Stack.Screen component={userka=='loading'?Loading:userka?MyTabs:Login} name='home'/>
         <Stack.Screen component={Login} name='login' />
+        <Stack.Screen options={{
+              headerShown:false
+          }} name='sendmoney' component={Sendmoney}/>
        
     </Stack.Navigator>    
 

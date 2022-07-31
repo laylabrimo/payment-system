@@ -15,7 +15,7 @@ const Savedcards = () => {
   return (
     <View style={styles.cardwrapper}>
       {user.finanaces.payment_methods.map(card=>(
-        <>
+
          <View  key={card.card.id} style={styles.card}>
         <Image style={{
           width:30,
@@ -79,7 +79,7 @@ const Savedcards = () => {
       </View>
       
      
-      </>
+
       ))}
        <Addcard />
 

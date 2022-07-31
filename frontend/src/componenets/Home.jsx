@@ -39,9 +39,19 @@ import ads from '../images/adv.png'
 import Botomnavigate from './Buttomnavigation';
 import { Snackbar } from '@mui/material/Snackbar';
 import Notifications from './reusable/Notifications';
+import {io} from  'socket.io-client'
+
+var socket = io('http://192.168.0.108:4000');
 export default function Home() {
   let [showblance,setshowblance]=React.useState(true)
   let [user,setuser]=useContext(Usercontext)
+  let [blance,setblance]=useState(user.finanaces.blance)
+  socket.on('connect',()=>{
+    console.log('connecred ..')
+  })
+  socket.on('updateblance'+user.cus_id,(payload)=>{
+    console.log('from socket listening ',setblance(payload.newblance))  })
+
   let paymentmethods=user.finanaces.payment_methods
 
   return (
@@ -102,7 +112,7 @@ export default function Home() {
        fontSize:'40px',
        fontWeight:'bold',
        padding:'22px'
-     }}>$ {showblance?user.finanaces.blance:'***'}{showblance?'.':''}<span style={{
+     }}>$ {showblance?blance:'***'}{showblance?'.':''}<span style={{
        color:'blue'
      }}>{showblance?'00':'**'}</span></Typography>
      
