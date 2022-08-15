@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Sendmoney from '../screens/protectedscreens/Payments/Sendmoney';
 import Home from '../screens/protectedscreens/Home';
 import Savedcards from '../screens/protectedscreens/Payments/Savedcards';
+import Mycontacts from '../screens/protectedscreens/Mycontacts';
 
 const Hiddingroutes = () => {
     let stack=createStackNavigator()
@@ -16,6 +17,7 @@ const Hiddingroutes = () => {
            <stack.Screen options={{
               headerShown:false
           }} name='savedcards' component={Savedcards}/>
+         
           
       </stack.Navigator>
    

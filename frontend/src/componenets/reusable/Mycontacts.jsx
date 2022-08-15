@@ -12,16 +12,20 @@ import { Usercontext } from '../../contexts/Usercontext';
 
 export default function Mycontacts() {
   let [userka,setuserka]=React.useContext(Usercontext)
-  console.log('in contacts ',userka)
+  let [mycontacts,setmycontacts]=React.useState(userka.contacts)
+  console.log(mycontacts)
   return (
+
       <Sidebar>
     <List sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper',marginTop:'70px' }}>
-      <ListItem alignItems="flex-start">
+   {mycontacts.map(x=>(
+     <>
+     <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Ubeid Nur Hirey" src="/static/images/avatar/1.jpg" />
+          <Avatar alt={x.name} src="/static/images/avatar/1.jpg" />
         </ListItemAvatar>
         <ListItemText
-          primary="Ubeid Nur Hirey"
+          primary={x.name}
           secondary={
             <React.Fragment>
               <Typography
@@ -30,57 +34,15 @@ export default function Mycontacts() {
                 variant="body2"
                 color="text.primary"
               >
-                ACC 102727363
+                ACC {x.acc}
               </Typography>
               {" — Active user"}
             </React.Fragment>
           }
         />
       </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Summer BBQ"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                to Scott, Alex, Jennifer
-              </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Sandra Adams
-              </Typography>
-              {' — Do you have Paris recommendations? Have you ever…'}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
+     </>
+   ))}
     </List>
     </Sidebar>
   );

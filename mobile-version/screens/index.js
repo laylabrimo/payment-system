@@ -12,6 +12,8 @@ import Loading from './Loading';
 import Myaccount from './protectedscreens/Myaccount';
 import MyTabs from '../routes/Tabs';
 import Sendmoney from './protectedscreens/Payments/Sendmoney';
+import Mycontacts from './protectedscreens/Mycontacts';
+import Recharge from './protectedscreens/Payments/Recharge';
 
 export default function Start() {
 
@@ -42,6 +44,12 @@ export default function Start() {
         <Stack.Screen options={{
               headerShown:false
           }} name='sendmoney' component={Sendmoney}/>
+           <Stack.Screen options={{
+              headerShown:false
+          }} name='Recharge' component={Recharge}/>
+           <Stack.Screen options={{
+              headerShown:false
+          }} name='mycontacts' component={Mycontacts}/>
        
     </Stack.Navigator>    
 

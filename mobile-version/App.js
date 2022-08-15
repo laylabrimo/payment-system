@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import MyTabs from './routes/Tabs';
 import Hiddingroutes from './routes/Hiddingroutes';
 import {io} from  'socket.io-client'
-var socket = io('http://192.168.0.108:4000');
+var socket = io('http://68.183.246.197:4000');
 
 const App = () => {
    console.log(socket.connected)

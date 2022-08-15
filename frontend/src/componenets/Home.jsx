@@ -41,7 +41,7 @@ import { Snackbar } from '@mui/material/Snackbar';
 import Notifications from './reusable/Notifications';
 import {io} from  'socket.io-client'
 
-var socket = io('http://192.168.0.108:4000');
+var socket = io('http://68.183.246.197:4000');
 export default function Home() {
   let [showblance,setshowblance]=React.useState(true)
   let [user,setuser]=useContext(Usercontext)

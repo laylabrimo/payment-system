@@ -14,11 +14,19 @@ import { useNavigation } from '@react-navigation/native';
 import {useContext} from 'react'
 import { Usercontext } from '../contexts/Usercontext';
 import resourses from '../../resouces';
+import * as Notifications from 'expo-notifications';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {io} from  'socket.io-client'
 
-var socket = io('http://192.168.0.108:4000');
+var socket = io('http://68.183.246.197:4000');
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 
 
@@ -26,14 +34,48 @@ var socket = io('http://192.168.0.108:4000');
 
 
 const Home = () => {
+
+  async function sendPushNotification(expoPushToken,title) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: title,
+      body: 'hi imran please see your email',
+      data: { someData: 'goes here' },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
+ 
   let [user,setuser]=useContext(Usercontext)
+  console.log(user)
   let [blance,setblance]=useState(user.finanaces.blance)
+  let [token,settoken]=useState('')
+  useEffect(()=>{
+    let getnot=async()=>{
+     let status= await Notifications.getPermissionsAsync()
+     console.log('statuska waa ',status)
+     let token = await (await Notifications.getExpoPushTokenAsync()).data
+     console.log(token);
+     settoken(token)
+    }
+    getnot()
+   },[])
   socket.on('connect',()=>{
-    console.log('connecred ..')
+   Alert.alert('connected to the socket')
   })
+  console.log(socket.connected)
 
   socket.on('updateblance'+user.cus_id,(payload)=>{
-console.log('from socket listening ',setblance(payload.newblance))  })
+console.log('from socket listening ',setblance(payload.newblance)),   sendPushNotification(token,'hi imran yo got money wwooooe!')})
   let navigate=useNavigation()
   useEffect(()=>{
     navigate.addListener('focus',async()=>{
@@ -64,7 +106,7 @@ console.log('from socket listening ',setblance(payload.newblance))  })
 
         <View style={{
           width:300,
-          height:90,
+          height:100,
           // backgroundColor:'#f5f5f5',
           backgroundColor:'#174c61',
           borderRadius:6,
@@ -73,6 +115,7 @@ console.log('from socket listening ',setblance(payload.newblance))  })
           
          
         }}>
+          
           <View style={{
             flex:1,
             justifyContent:'center',
@@ -80,14 +123,23 @@ console.log('from socket listening ',setblance(payload.newblance))  })
           
             
           }}>
+            
+            <Text style={{
+              fontSize:12,
+              color:'#39ff12',
+              marginLeft:3
+            }}>Current Blance</Text>
             <Text style={{
               fontSize:20,
               color:'white'
             }}>$ {blance}.00</Text>
-            <Text style={{
-              fontSize:12,
-              color:'#39ff12'
-            }}>Current Blance</Text>
+           
+             <Text style={{
+              fontSize:11,
+              color:'white'
+            }}>ACC: {user.finanaces.acc}</Text>
+            
+           
 
           </View>
           <View style={{
@@ -97,8 +149,10 @@ console.log('from socket listening ',setblance(payload.newblance))  })
             alignItems:'center'
            
           }}> 
-          <TouchableOpacity>
-          <Image style={{
+          <TouchableOpacity onPress={()=>{
+            navigate.navigate('Recharge')
+          }}>
+          <Image  style={{
             tintColor:'white',
           }} source={addicon} alt='addicon'/>
           </TouchableOpacity>

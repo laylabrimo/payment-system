@@ -58,7 +58,7 @@ export default function Faceverification({setfaceverified}) {
       const imageSrc = webcamRef.current.getScreenshot();
       setimagesrc(imageSrc)
       console.log(imageSrc)
-      axios.post('http://localhost:4000/uploadfaces',{link:imageSrc})
+      axios.post('http://68.183.246.197:4000/uploadfaces',{link:imageSrc})
       .then((x)=>{
         if (x.data.data!='ok'){
           seterror('please face the camera correctly')
