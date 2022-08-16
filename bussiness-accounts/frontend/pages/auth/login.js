@@ -7,13 +7,26 @@ import Image from 'next/image'
 import { Button ,Alert} from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
+import Apicaller from '../../resources/apicaller';
 function Login() {
     let {loginwrapper,loginbox,loginside,imageside,input,logininfo,log}=styles
     let [bn,setbn]=useState('')
     let [bp,setbp]=useState('')
+    
     let router= useRouter()
   console.log(router)
-    let [error,seterror]=useState('')
+  let [error,seterror]=useState('')
+  let handlelogin=async()=>{
+    let logindata={
+      bussinessnumber:bn,
+      password:bp
+    }
+    let api=new Apicaller()
+    let res=await api.login(logindata)
+    console.log(res)
+
+
+  }
   return (
     <div className={loginwrapper}>
      {error &&  <Alert style={{
@@ -42,7 +55,9 @@ function Login() {
         }} type='password' className={input} placeholder='Bussiness Password' name='bp' />
         
        
-        <Button  disabled={!bn || !bp?true:false} fullWidth variant='contained' style={{
+        <Button onClick={()=>{
+          handlelogin()
+        }}   disabled={!bn || !bp?true:false} fullWidth variant='contained' style={{
              margin:19,
              color:'white',
             width:'40%',

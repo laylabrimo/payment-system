@@ -94,7 +94,6 @@ function Verifyemail({data}) {
               api.data={email:data.businessemail}
               let res= await api.sendvercode()
               console.log(res)
-              setshowtoast(true)
 
 
               

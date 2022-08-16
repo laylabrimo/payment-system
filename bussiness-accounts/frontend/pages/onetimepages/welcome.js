@@ -1,9 +1,13 @@
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect } from 'react'
 import Home from '../index';
+import Apicaller from '../../resources/apicaller';
+import { Globalcontexts } from '../../profiders/global';
 
 function welcome() {
+  let [globals,setglobals]=useContext(Globalcontexts)
+  let router=useRouter()
   
   return (
    <div style={{
@@ -36,7 +40,15 @@ function welcome() {
             <h3>End of the agreement</h3>
 			</div>
 	</div>
-	<div className="popup-button"><button className="pum-close popmake-close button-green" type="button" aria-label="Close" disabled="">Agree</button></div>  </div>
+	<div className="popup-button"><button onClick={async()=>{
+    let api=new Apicaller()
+    api.updaterefrence({
+      agreement_accepted:true,
+      email:globals.email
+    })
+    router.replace('/auth/login')
+
+  }} className="pum-close popmake-close button-green" type="button" aria-label="Close" disabled="">Agree</button></div>  </div>
 </div>
 <div>
   <h4 style={{

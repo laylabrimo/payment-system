@@ -27,7 +27,7 @@ let {
   business_owner_name,
     refrences: {
       vercode:null,
-      
+      agreement_accepted:false,
     },
     payout: [],
     business_logo: '',

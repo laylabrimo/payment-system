@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styles from '../../styles/auth/signup.module.css'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FormGroup from '@mui/material/FormGroup';
@@ -10,7 +10,10 @@ import Link from "next/link";
 import axios from 'axios';
 import Apicaller from '../../resources/apicaller';
 import Verifyemail from '../../authentications/verifyemail';
+import { Globalcontexts } from '../../profiders/global';
 function Signup() {
+  let [globals,setglobals]=useContext(Globalcontexts)
+
   let {signupwrapper,signupbox,inputbox,input}= styles
   let [checked,setchecked]=useState(false)
   let [verneeded,setverneeded]=useState(false)
@@ -43,6 +46,7 @@ function Signup() {
  api.data={email:bussinessinfo.businessemail}
  api.sendvercode()
  setverneeded(true)
+ setglobals({...globals,email:bussinessinfo.businessemail})
 
 
 
