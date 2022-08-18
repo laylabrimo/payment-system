@@ -10,8 +10,10 @@ router.post('/',async(req,res)=>{
         console.log('account found',account.password,data.data.password)
         if(account.businesspassword==data.data.password){
             let token=generatetoken(account)
+            res.header('auth',token)
             res.send({
-                token
+                token,
+                msg:'login successful'
             })
         }else{
             res.send({

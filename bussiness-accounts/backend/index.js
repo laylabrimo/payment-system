@@ -24,6 +24,8 @@ app.use('/login',require('./routes/auth/login'));
 app.use('/vercode',require('./routes/auth/vercode'));
 app.use('/intents',require('./routes/payments/intents'));
 app.use('/updaterefrence',require('./routes/auth/updaterefrence'));
+app.use('/getacount',require('./routes/profiders/accountinfoprofider'));
+
 
 
 

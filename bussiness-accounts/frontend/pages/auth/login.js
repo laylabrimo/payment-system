@@ -23,7 +23,12 @@ function Login() {
     }
     let api=new Apicaller()
     let res=await api.login(logindata)
-    console.log(res)
+    
+    if (res.data.msg=='login successful'){
+      localStorage.setItem('token',res.data.token)
+      console.log('redrecting you to the main page')
+      router.replace('/main')
+    }
 
 
   }

@@ -7,6 +7,7 @@ let generatetoken=(data)=>{
     return token
 }
 let verifytoken=(token)=>{
+    console.log('in the verification',token)
     let data= jwt.verify(token,secret)
     return data
 }
