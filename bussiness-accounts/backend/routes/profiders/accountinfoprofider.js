@@ -3,6 +3,7 @@ const { verifytoken } = require('../../helpers/tokens');
 
 let router=require('express').Router()
 router.post('/',async(req,res)=>{
+    console.log('in the getting account route')
     let token=req.body.token;
     try {
     let verified=verifytoken(token)

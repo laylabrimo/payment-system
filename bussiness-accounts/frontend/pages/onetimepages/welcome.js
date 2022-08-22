@@ -5,7 +5,7 @@ import Home from '../index';
 import Apicaller from '../../resources/apicaller';
 import { Globalcontexts } from '../../profiders/global';
 
-function welcome() {
+function Welcome() {
   let [globals,setglobals]=useContext(Globalcontexts)
   let router=useRouter()
   
@@ -61,4 +61,4 @@ function welcome() {
   )
 }
 
-export default welcome
+export default Welcome

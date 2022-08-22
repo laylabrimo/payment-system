@@ -8,26 +8,31 @@ import { Button ,Alert} from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import Apicaller from '../../resources/apicaller';
+import getUserGeolocationDetails from '../../services/getlocation';
 function Login() {
     let {loginwrapper,loginbox,loginside,imageside,input,logininfo,log}=styles
     let [bn,setbn]=useState('')
     let [bp,setbp]=useState('')
     
     let router= useRouter()
-  console.log(router)
   let [error,seterror]=useState('')
   let handlelogin=async()=>{
+    let locationingo=await getUserGeolocationDetails()
     let logindata={
       bussinessnumber:bn,
-      password:bp
+      password:bp,
+      location:locationingo
     }
     let api=new Apicaller()
     let res=await api.login(logindata)
-    
     if (res.data.msg=='login successful'){
       localStorage.setItem('token',res.data.token)
       console.log('redrecting you to the main page')
-      router.replace('/main')
+      router.replace('/dashboard')
+    }
+   
+    else{
+      console.log('you are trying me oh')
     }
 
 

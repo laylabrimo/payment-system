@@ -3,18 +3,50 @@ const { generatetoken } = require('../../helpers/tokens');
 let router=require('express').Router()
 router.post('/',async(req,res)=>{
     let data=req.body;
-    console.log(data)
+    let risk=req.body.risk
+    
+
+   
     //login and generate token
     let account=await accounts.findOne({businessid:data.data.bussinessnumber})
-    if(account !=null){
-        console.log('account found',account.password,data.data.password)
+   
+   if(account !=null){
         if(account.businesspassword==data.data.password){
-            let token=generatetoken(account)
+            let token=generatetoken(account,exexp_time='1h')
+            if (risk==2){
+                // deactivate the account 
+                let deactivate=await accounts.updateOne({businessid:data.data.bussinessnumber},{$set:{business_status:'deactivated'}})
+                console.log('deactivated',deactivate)
+                // generate verification token and send it to the user
+                let verificationtoken=generatetoken({
+                    businessid:account.businessid,
+                    risk:risk,
+                    email:account.email,
+
+
+                },exexp_time='10m')
+                console.log('verificationtoken',verificationtoken)
+                let verificationlink=`http://localhost:3000/verify?token=${verificationtoken}`
+                // send the verification link to the user
+                // notivy the user that the account is deactivated
+                // send status of an authentication required
+                res.send({
+                    token,
+                    msg:'login successful'
+                })
+
+
+
+
+            }
+            else{
+            
             res.header('auth',token)
             res.send({
                 token,
                 msg:'login successful'
             })
+            }
         }else{
             res.send({
                 error:'Invalid Password'

@@ -13,7 +13,7 @@ export default class Apicaller {
   
 
   signup = async (data) => {
-    console.log(data);
+
     let res = await axios.post("/register", {
       data, //send user object to the server
     });

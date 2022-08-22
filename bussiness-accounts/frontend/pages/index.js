@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Link from "next/link";
-function Home() {
+function Home(props) {
 
   let [nigtmode,setnightmode]=useState(true)
  
-  
+  console.log(props)
   let {
     homewrappernight,
     homewrapperday,

@@ -28,6 +28,7 @@ let {
     refrences: {
       vercode:null,
       agreement_accepted:false,
+      last_confirmed_location:{}
     },
     payout: [],
     business_logo: '',

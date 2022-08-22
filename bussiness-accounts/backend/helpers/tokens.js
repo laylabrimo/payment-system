@@ -1,9 +1,9 @@
 let jwt=require('jsonwebtoken')
 let secret='mysecret' 
-let generatetoken=(data)=>{
+let generatetoken=(data,exp_time)=>{
     let token=  jwt.sign({
         data
-    },secret,{expiresIn:'1h'})
+    },secret,{expiresIn:exp_time})
     return token
 }
 let verifytoken=(token)=>{

@@ -17,6 +17,8 @@ app.use(cors({
 }));
 let auth = require('./middlewares/auth');
 app.use(auth);
+let radar = require('./middlewares/radar');
+app.use(radar)
 
 app.use('/register',require('./routes/auth/register'));
 app.use('/login',require('./routes/auth/login'));

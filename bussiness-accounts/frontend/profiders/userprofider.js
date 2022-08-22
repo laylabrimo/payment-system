@@ -5,23 +5,24 @@ export const Userprofider=(props)=>{
   useEffect(()=>{
     let getaccount=async()=>{
         let token=localStorage.getItem('token')
-    if(token){
+        console.log('tokenka',token)
+    if(token!=null){
        // verify token
+       console.log('verifying token')
        let api=new Apicaller()
        let res=await api.getaccount(token)
-       
-       setuser(res)
-
       
-       
+    }
+    else{
+      console.log('do something else')
 
-        }
+    }
     }
     getaccount()
 
   },[])
    
-    let [user,setuser]=useState('waaw')
+    let [user,setuser]=useState('noaccount')
   
 
     return (
