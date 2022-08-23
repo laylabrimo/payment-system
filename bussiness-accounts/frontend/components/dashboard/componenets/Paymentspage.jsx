@@ -61,7 +61,7 @@ function Paymentspage() {
                       
 
                     }}>
-                        <p>Imran Nur Hirey<p>trx: P88JHH78JH</p></p> <hr/>
+                        <p>Imran Nur Hirey<p>trx: this transaction id</p></p> <hr/>
                         <Divider/>
                          <p>Pad via qrcide<p>on 12-12-2019</p></p>
                          

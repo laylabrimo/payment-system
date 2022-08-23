@@ -1000,6 +1000,11 @@
     "path-type" "^4.0.0"
     "yaml" "^1.10.0"
 
+"create-next-app@^12.2.5":
+  "integrity" "sha512-NaMprsZjdAY9zlo0EAxbcv2zPk0jIShqkco5OIwly4pD5b1knCqfft6l7zupqGvYp+qb2w2aZntQpGLTagmVUQ=="
+  "resolved" "https://registry.npmjs.org/create-next-app/-/create-next-app-12.2.5.tgz"
+  "version" "12.2.5"
+
 "cross-spawn@^7.0.2":
   "integrity" "sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w=="
   "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"

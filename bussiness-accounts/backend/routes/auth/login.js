@@ -4,18 +4,20 @@ let router=require('express').Router()
 router.post('/',async(req,res)=>{
     let data=req.body;
     let risk=req.body.risk
+    console.log('xogta ',data)
     
 
    
     //login and generate token
-    let account=await accounts.findOne({businessid:data.data.bussinessnumber})
+    let account=await accounts.findOne({businessid:data.data.logininfo.email})
+    console.log('account ',account)
    
    if(account !=null){
-        if(account.businesspassword==data.data.password){
+        if(account.businesspassword==data.data.logininfo.password){
             let token=generatetoken(account,exexp_time='1h')
             if (risk==2){
                 // deactivate the account 
-                let deactivate=await accounts.updateOne({businessid:data.data.bussinessnumber},{$set:{business_status:'deactivated'}})
+                let deactivate=await accounts.updateOne({businessid:data.data.logininfo.email},{$set:{business_status:'deactivated'}})
                 console.log('deactivated',deactivate)
                 // generate verification token and send it to the user
                 let verificationtoken=generatetoken({
@@ -41,7 +43,7 @@ router.post('/',async(req,res)=>{
             }
             else{
             
-            res.header('auth',token)
+          
             res.send({
                 token,
                 msg:'login successful'

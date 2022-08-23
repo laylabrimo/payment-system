@@ -10,7 +10,7 @@ mongoose.connect(url,
     console.log('connnected')
 })
 .catch(er=>{
-  console.log(er)
+  console.log(er.message)
 })
 
 
