@@ -1,15 +1,39 @@
-import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Login from './pages/authpages/login';
-import Home from './pages/dashboard/Home';
+import React,{useContext} from 'react';
+import Login from './pages/Login';
+import Dashboard from './pages/dahboard';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { Accountcontext } from './context/Acoountcontext';
+import Register from './pages/Register';
+// i
 
-class App extends Component {
-  render() {
+function App() {
+  let [account,setaccount]=useContext(Accountcontext)
+  let Loading=()=>{
     return (
-   
-      <Home/>
-      
-)}
+      <h1>Loading </h1>
+    )
+  }
+  return (
+    <BrowserRouter>
+    <Routes>
+    <Route path="/" element={account==='null'?<Loading/>:account===null?<Navigate to='/login'/>:<Dashboard/>}/>          
+    <Route path="/login" element={account==='null'?<Loading/>:account!=null?<Navigate to='/'/>:<Login/>}/>          
+    <Route path="/register" element={account==='null'?<Loading/>:account!=null?<Navigate to='/'/>:<Register/>}/>          
+
+
+       
+    </Routes>
+  </BrowserRouter>
+  
+  )
+    
 }
+
 export default App;

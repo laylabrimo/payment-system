@@ -6,7 +6,7 @@ const intentsschema = new schema({
         type:String
     },
     who:{
-        type:String
+        type:Object
     },
     status:{
         type:String

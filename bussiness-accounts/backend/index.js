@@ -15,10 +15,10 @@ app.use(cors({
     
     
 }));
-let auth = require('./middlewares/auth');
-app.use(auth);
-let radar = require('./middlewares/radar');
-app.use(radar)
+// let auth = require('./middlewares/auth');
+// app.use(auth);
+// let radar = require('./middlewares/radar');
+// app.use(radar)
 
 app.use('/register',require('./routes/auth/register'));
 app.use('/login',require('./routes/auth/login'));
@@ -27,6 +27,8 @@ app.use('/vercode',require('./routes/auth/vercode'));
 app.use('/intents',require('./routes/payments/intents'));
 app.use('/updaterefrence',require('./routes/auth/updaterefrence'));
 app.use('/getacount',require('./routes/profiders/accountinfoprofider'));
+app.use('/tokens',require('./routes/auth/tokens.js'));
+app.use('/apps',require('./routes/applications/apps'));
 
 
 

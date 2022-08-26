@@ -3,7 +3,7 @@ let jw=require('jsonwebtoken')
 class Jwt{
 token=''
 data={}
-secretkey='verystrongsecretkey'
+secretkey='mysecret'
 signdata=(exp)=>{
     
     let token=jw.sign(this.data,this.secretkey)

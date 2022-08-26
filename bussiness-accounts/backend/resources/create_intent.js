@@ -4,10 +4,11 @@ let makeid =require('../helpers/makeid')
 var QRCode = require('qrcode')
 let fs = require('fs');
 const saveImage = require('./uploadimagefrombase64');
+let accounts = require('../db/schemas/registerschema')
 
  async function createpaymentintent (data){
-console.log(data)
-let {bussiness_id,amount,reason}=data;
+console.log('data ',data)
+let {bussinessid,amount,reason}=data;
 // first create payment intent id and then create qr code for that payment intent - global
 let paymentIntentId='PI'+makeid(20);
 console.log(paymentIntentId)
@@ -22,9 +23,11 @@ let res= saveImage(qrCode,paymentIntentId);
 console.log(res)
 let link='http://localhost:5500/qr/qr'+paymentIntentId+'.png';
 let paymenturl='http://localhost:5500/pay/'+paymentIntentId;
+let  bussinessinfo=await accounts.findOne({businessid:bussinessid})
+console.log('bussinessinfo ',bussinessinfo)
 let paymentinten= new Paymentintent({
     intent_id:paymentIntentId,
-    who:bussiness_id,
+    who:{bname:bussinessinfo.businessname,bussinessid:bussinessid,bussinessimage:bussinessinfo.business_logo,bussinessaddress:bussinessinfo.business_address},
     status:'unpaid',
     paidby:'', // user id 
     ammount:amount,
@@ -34,7 +37,7 @@ let paymentinten= new Paymentintent({
 })
  paymentinten.save((err,doc)=>{
     if(err){
-        console.log(err)
+        console.log(err.message)
     }
     else{
         console.log(doc)
@@ -44,7 +47,7 @@ let paymentinten= new Paymentintent({
 
 
 
-return data
+return paymentinten;
 /*
 * expected return is a link to the payment intent
 */

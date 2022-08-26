@@ -13,8 +13,9 @@ let {
   businesswebsite,
   businessdescription,
   business_owner_name,
-  password1
-}=req.body.data;
+  password,
+  userlocation
+}=req.body;
   let data={
     businessid: 'B'+makeid(10),
      businessname,
@@ -28,7 +29,8 @@ let {
     refrences: {
       vercode:null,
       agreement_accepted:false,
-      last_confirmed_location:{}
+      last_confirmed_location:{userlocation},
+      blance:0
     },
     payout: [],
     business_logo: '',
@@ -36,7 +38,7 @@ let {
     business_status: 'active',
     business_type: '',
     business_category: '',
-    businesspassword: password1,
+    businesspassword: password,
 }
 let newRegister=new Registerschema(data)
 try{

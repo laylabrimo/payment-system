@@ -33,7 +33,7 @@ const deposit = require("./payments/deposit");
 const sendmoney = require("./payments/sendmoney");
 const { now } = require("mongoose");
 const sendcodethroughemail = require("./sendcode_email");
-const createtransaction = require("./payments/Createtransaction,js");
+const createtransaction = require("./payments/Createtransaction.js");
 const addtomycontacts = require("./resources/addmycontacts");
 
 app.get("/hellobro", (req, res) => {
@@ -69,7 +69,7 @@ io.on("connection", (soket) => {
 
     setTimeout(async () => {
       try {
-        let data = jwt.verify(token, "verystrongsecretkey");
+        let data = jwt.verify(token, "mysecret");
         let user = await users.findOne({ email: data.email });
         if (user) {
           res.json({
@@ -101,7 +101,7 @@ io.on("connection", (soket) => {
     let token = req.body.token;
     console.log("halkaanw axaa lagu soo dabacay", token);
     try {
-      let user = jwt.verify(token, "verystrongsecretkey");
+      let user = jwt.verify(token, "mysecret");
       console.log("in jwt", user);
       let userka = await users.findOne({ email: user.email });
       console.log("in mongodb", userka);
@@ -205,7 +205,7 @@ io.on("connection", (soket) => {
 
     console.log("datada la xirayo marka la verify gareenayo  waa ", data);
 
-    let token = jwt.sign(data, "verystrongsecretkey", { expiresIn: "60m" });
+    let token = jwt.sign(data, "mysecret", { expiresIn: "60m" });
     let link = "http://localhost:3000/" + token;
     res.json({
       link: token,

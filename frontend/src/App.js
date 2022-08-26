@@ -37,6 +37,7 @@ import { Offline, Online } from "react-detect-offline";
 import nointernet from '../src/assets/nointernet.png'
 import Sidebar from '../src/componenets/Sidebar'
 import Errorpage from './componenets/reusable/Errorpage';
+import Payintent from './componenets/payments/Payintent';
 
 
 var socket = io('http://localhost:4000');
@@ -57,7 +58,7 @@ function App() {
   let [message,setmessage]=useState('')
   
 console.log(user)
-  let [not,setnot]=useState(false)
+  let [not,setnot]=useState(false) // this is notifications from the server
 
   socket.on('connect',()=>{
     console.log('connecred ..')
@@ -143,6 +144,8 @@ console.log(user)
           <Route path="/register" element={user==='null'?<Loading/>:user===null?<Register/>:<Navigate to='/'/>}/>
 
           <Route path="/mycontacts" element={user==='null'?<Loading/>:user===null?<Login/>:<Mycontacts/>}/>
+          <Route path="/pay/:paymentIntentId" element={user==='null'?<Loading/>:user===null?<Login/>:<Payintent/>}/>
+
           <Route path="/security" element={user==='null'?<Loading/>:user===null?<Login/>:<Security/>}/>
           <Route path="/sendmoney" element={user==='null'?<Loading/>:user===null?<Login/>:<Sendmoney/>}/>
           <Route path="/pm" element={user==='null'?<Loading/>:user===null?<Login/>:<Paymentmethods/>}/>

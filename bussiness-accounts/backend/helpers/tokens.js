@@ -8,8 +8,14 @@ let generatetoken=(data,exp_time)=>{
 }
 let verifytoken=(token)=>{
     console.log('in the verification',token)
-    let data= jwt.verify(token,secret)
-    return data
+   try{
+       let data= jwt.verify(token,secret)
+       return data
+   }
+    catch(err){
+      throw new Error(err.message)
+    }
+
 }
 let getuser=(token)=>{
     let data=verifytoken(token)

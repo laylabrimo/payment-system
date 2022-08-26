@@ -30,8 +30,8 @@ router.post("/", async(req, res) => {
         }
         console.log('datada la xirayo marka loginka lasamenayo nayo waa ',data)
        
-        let accesstoken= jwt.sign(data,'verystrongsecretkey')
-        let refreshtoken= jwt.sign(data,'verystrongsecretkey')
+        let accesstoken= jwt.sign(data,'mysecret')
+        let refreshtoken= jwt.sign(data,'mysecret')
         var myquery = { email: user.email };
         var newvalues = { $set: {security: {accesstoken:accesstoken,refreshtoken:refreshtoken}} };
         User.findOneAndUpdate(myquery,newvalues,(err,res)=>{
