@@ -1,15 +1,18 @@
 import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/common/navbar';
 import Areyousure from '../components/common/popups/Areyousure';
+import Customers from '../components/dashboard/Customers';
 import Devloper from '../components/dashboard/Devloper';
 import Home from '../components/dashboard/Home';
 import Intents from '../components/dashboard/Intents';
 import Payments from '../components/dashboard/Payments';
+import { Pincontext } from '../context/pincontext';
 
 const Dashboard = () => {
   let [logout,setlogout]=React.useState(false)
+  let [pinrequired,setpinrequired]=useContext(Pincontext)
   let route=useNavigate()
   let onlocgoutclick=()=>{
     localStorage.removeItem('token')
@@ -24,6 +27,7 @@ const Dashboard = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            
         }}>
             <Navbar/>
             <div style={{
@@ -32,11 +36,11 @@ const Dashboard = () => {
                
 
             }}>
-            <Tabs variant='enclosed'>
+            <Tabs isLazy variant='enclosed'>
   <TabList>
-    <Tab>Home</Tab>
+    <Tab >Home</Tab>
     <Tab>Payments</Tab>
-    <Tab>Customers</Tab>
+    <Tab >Customers</Tab>
     <Tab>Billing</Tab>
     <Tab>Intents</Tab>
     <Tab>Developer section</Tab>
@@ -62,7 +66,7 @@ const Dashboard = () => {
     <Payments/>
     </TabPanel>
     <TabPanel>
-   
+   <Customers/>
     </TabPanel>  <TabPanel>
 
     </TabPanel>  <TabPanel>

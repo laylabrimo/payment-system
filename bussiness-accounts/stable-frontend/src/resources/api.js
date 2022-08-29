@@ -77,4 +77,8 @@ export default class Apicaller {
     let res= await axios.post('/apps/getapp',{accountid:data})
     return res.data
   }
+  getcustomers=async(data)=>{
+    let res= await axios.post('/customers/get',{accountid:data})
+    return res.data
+  }
 }

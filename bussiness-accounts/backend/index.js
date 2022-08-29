@@ -29,6 +29,8 @@ app.use('/updaterefrence',require('./routes/auth/updaterefrence'));
 app.use('/getacount',require('./routes/profiders/accountinfoprofider'));
 app.use('/tokens',require('./routes/auth/tokens.js'));
 app.use('/apps',require('./routes/applications/apps'));
+app.use('/customers',require('./routes/profiders/customesrprofider'));
+app.use('/keys',require('./routes/applications/keyschecker'));
 
 
 

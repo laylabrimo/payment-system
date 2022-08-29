@@ -7,12 +7,14 @@ import {ChakraProvider} from '@chakra-ui/react'
 import {theme} from './theme'
 import { Accountprofider } from './context/Acoountcontext';
 import "friendly-challenge/widget";
+import { Pinprofider } from './context/pincontext';
 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Pinprofider>
     <Accountprofider>
     <ChakraProvider theme={theme}>
       
@@ -22,6 +24,7 @@ root.render(
    </ChakraProvider>
 
     </Accountprofider>
+    </Pinprofider>
   
   </React.StrictMode>
 );

@@ -95,7 +95,7 @@ export default function Sidebar(props) {
    
 
   }}>
-<img src={diulogo} width='200px' height='100px'/>    </Box>
+<img src='/images/logo.png' width='300px' height='300px'/>    </Box>
     <Box sx={{
     width:'100%',
     height:'70%',

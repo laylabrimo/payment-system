@@ -10,6 +10,7 @@ let accounts = require('../db/schemas/registerschema')
 console.log('data ',data)
 let {bussinessid,amount,reason}=data;
 // first create payment intent id and then create qr code for that payment intent - global
+console.log('before creating payment intent',bussinessid,amount,reason)
 let paymentIntentId='PI'+makeid(20);
 console.log(paymentIntentId)
 let qrCode=await QRCode.toDataURL(paymentIntentId,{

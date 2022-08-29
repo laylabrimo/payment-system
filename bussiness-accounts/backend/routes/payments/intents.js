@@ -7,6 +7,7 @@ const checkaccountbalance = require('../../helpers/Blancechecker');
 const updateuserblance = require('../../resources/updateuserblance');
 const Updatebussinessblance = require('../../resources/Updatebussinessblance');
 let createtransaction=require('../../resources/Createtransaction')
+let account= require('../../db/schemas/registerschema')
 
 // paymentIntent is the payment intent object and bussiness accounts can only generate it
 
@@ -14,10 +15,10 @@ router.post('/create',async(req,res)=>{
    /*
     * expected body is - bussiness-id - amount -reason 
    */
-   let {bussinessid,amount,reason}=req.body;
-   console.log('info  ',req.body)
+   let {bussinessid}=req.body;
+   
    let resp=await createpaymentintent({
-      bussinessid,amount,reason
+      bussinessid,amount:req.body.data.amount,reason:req.body.data.reason
    });
    res.send(resp);
  
@@ -28,16 +29,13 @@ router.post('/create',async(req,res)=>{
 
 })
 router.post('/get',async(req,res)=>{
-   console.log('in the getting account route',req.body)
    let bussinessid=req.body.bussinessid;
-   console.log('bussinessid',bussinessid)
    let paymentintent=await Paymentintent.find({'who.bussinessid':bussinessid});
   res.send(paymentintent);
 
 })
 router.post('/getintentinfo',async(req,res)=>{
    let intentid=req.body.intentid;
-   console.log(intentid);
    let paymentintent=await Paymentintent.findOne({intent_id:intentid});
    if(paymentintent){
          res.send(paymentintent);
@@ -55,7 +53,6 @@ router.post('/getintentinfo',async(req,res)=>{
 
 router.post('/payintent',async(req,res)=>{
    // expected body is - intentid - userid
-  console.log(req.body) 
   let {intentid,user,token}=req.body;
 
   // first check the intent information and then check the user account balance
@@ -75,20 +72,15 @@ router.post('/payintent',async(req,res)=>{
       let userka= getuser(token);
       // compare the the two emails and if they are same then only proceed
       if (userka.email==user.email){
-         console.log('user is same');
          let  userfromdb=await users.findOne({email:user.email})
-         console.log('usrka leh emailka ',user.email,' waa ',userfromdb);
-         console.log(user.email)
          // check the user blance is greater than the amount to be paid
       
          let hasenoughbalance=await checkaccountbalance(userfromdb.cus_id,intentinfo.ammount);
          if(hasenoughbalance){
             // now detuct the amount from the user account
             let newblance=userfromdb.finanaces.blance-intentinfo.ammount;
-            console.log(userfromdb.finanaces.blance+'-'+intentinfo.ammount+'='+newblance);
             let updateduserblance= await updateuserblance('detuct',userfromdb.cus_id,intentinfo.ammount);
             // update bussiness acount blance
-            console.log('bussiness blance ',intentinfo)
             let updatedbussinessblance= await Updatebussinessblance('add',intentinfo.who.bussinessid,intentinfo.ammount);
             
             if (updateduserblance.status=='success' && updatedbussinessblance.status=='success'){
@@ -101,7 +93,10 @@ router.post('/payintent',async(req,res)=>{
                   ammount:intentinfo.ammount,
                 };
                   let trx_id=await createtransaction(trx_info);
-                  console.log(trx_id)
+
+            // add this customer to the list of customers of this bussiness 
+            let updatedbussiness= await  account.updateOne({businessid:intentinfo.who.bussinessid},{$push:{customers:userfromdb}});
+            console.log('kanaa la update gareeyay ',intentinfo.who);
                res.send({
                   status:'success',
                   message:'payment intent paid'

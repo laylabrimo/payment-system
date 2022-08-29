@@ -83,7 +83,7 @@ const Intents = () => {
       {intents.map(intent=>(
         <Tr key={intent.intent_id}>
         <Td>{intent.intent_id}</Td>
-        <Td> ${intent.amount}</Td>
+        <Td> ${intent.ammount}</Td>
         <Td isNumeric>{intent.status}</Td>
         <Td> <FaArrowRight onClick={()=>{
           setcurrentintent(intent)

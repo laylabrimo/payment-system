@@ -5,16 +5,22 @@ import Apicaller from '../../resources/api';
 import { Accountcontext } from '../../context/Acoountcontext';
 import { TableContainer } from '@mui/material';
 import { ArrowForwardIcon, ArrowLeftIcon } from '@chakra-ui/icons';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Pinrequired from '../security/Pinrequired';
+import { Pincontext } from '../../context/pincontext';
 
 
 const Devloper = () => {
     let [createapp, setcreateapp] = React.useState(false);
     let [account,setaccount]=React.useContext(Accountcontext)
+    let [refresh, setrefresh] = React.useState(false);
+    let [pinisrequired,setpinisrequired]=React.useContext(Pincontext)
     let [showsecretkey, setshowsecretkey] = React.useState({
         show: false,
         secretkey: "",
         
     });
+
     let handshowsecret=(publishablekey)=>{
         console.log(publishablekey)
         // find app secretkey
@@ -25,22 +31,35 @@ const Devloper = () => {
         })
 
     }
+    let hidesecretkey=()=>{
+        setshowsecretkey({
+            show: false,
+            secretkey: ""
+        })
+    }
    
     let [apps, setapps] = React.useState([]);
     useEffect(()=>{
+        setpinisrequired(true)
+    },[])
+    useEffect(()=>{
+  
         let getapps=async()=>{
             let api=new Apicaller()
             let res= await api.getapps(account.businessid)
             setapps(res)
+           
+          
 
         }
         getapps()
-    },[])
+    },[refresh])
     console.log(apps)
     if (apps){
         return (
             <Box width='100%' margin={4} display='flex' flexDirection='column' padding={4}    height='100%'>
                 <Heading size='lg'>Your Apps </Heading>
+                <Pinrequired/>
                 <Divider margin={6}/>
                 
                 <TableContainer>
@@ -58,17 +77,24 @@ const Devloper = () => {
     <Tbody>
         {apps.map(app=>(
             <Tr key={app}>
-                 <Td>{app.appname}</Td>
+           {pinisrequired?<></>:<>
+           <Td>{app.appname}</Td>
             <Td>{app.appsecretssecrets[0].publishkey}</Td>
-            <Td>{showsecretkey.show?app.appsecretssecrets[0].Secretkey:<>********************
-            <Button onClick={()=>{
+            <Td>{showsecretkey.show && app.appsecretssecrets[0].Secretkey==showsecretkey.secretkey?<div style={{display:'flex'}}>
+                {app.appsecretssecrets[0].Secretkey}
+                <FaEyeSlash onClick={()=>{
+                    hidesecretkey()
+                }} style={{cursor:'pointer',marginLeft:'7px'}}/>
+            </div>:<div style={{display:'flex'}}>
+           <FaEye style={{cursor:'pointer'}} onClick={()=>{
                 handshowsecret(app.appsecretssecrets[0].publishkey)
-            }}>show</Button>
+
+           }} width={300} height={300}/>
 
             
-            </>}</Td>
+            </div>}</Td>
             <Td>{app.publishablekey}</Td>
-            <Td><ArrowForwardIcon/></Td>
+            <Td><ArrowForwardIcon/></Td></>}
         </Tr>
         ))}
       
@@ -83,6 +109,8 @@ const Devloper = () => {
     let api=new Apicaller()
     let res=await api.registerapp(e,account.businessid)
     console.log(res)
+    setcreateapp(false)
+    setrefresh(true)
 }} />}
                 <Newappform show={createapp} setshow={setcreateapp}/>
             </Box>
@@ -100,6 +128,7 @@ const Devloper = () => {
     }}>Create New App</Button>
 
 </Box>
+
 {<Newappform open={createapp} setopen={setcreateapp} onsave={async(e)=>{
     let api=new Apicaller()
     let res=await api.registerapp(e,account.businessid)

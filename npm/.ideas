@@ -1,0 +1,74 @@
+// here i want to create an npm package that will bussiness acounts to create an intents for the user to use
+// this will be a npm package that will be used in the front end to create an intents for the user to use
+// structure
+// developer will create app inside a bussiness account and will add endpoint
+// after that developer will get publishable key and private key
+// after he will install paysom package and initialize it inside on his  app
+//npm i paysom 
+// initialize it inside the app
+// let Paysom = require('paysom');
+// let paysom = new Paysom(publishableKey, privateKey);
+// let intent = await paysom.createIntent({
+//     amount: 1000,
+// reason: 'Payment for something',
+// successUrl: 'http://localhost:3000/success',
+// cancelUrl: 'http://localhost:3000/cancel'
+// });
+// after that paysom will create an intent and will return an intent information including link to pay and qrcode for the user to pay
+// after that the user will pay and will be redirected to the success url
+// if the user will cancel the payment then he will be redirected to the cancel url
+ 
+        how to use this npm package
+        npm install paysom
+        let Paysom = require('paysom');
+        let paysom = new Paysom(publishableKey, privateKey);
+        let intent = await paysom.createIntent({
+            amount: 1000,
+            reason: 'Payment for something',
+            successUrl: 'http://localhost:3000/success',
+            cancelUrl: 'http://localhost:3000/cancel'
+        });
+        console.log(intent);
+
+// also this npm package has methods for checking the status of the payment and for getting the payment information
+// npm install paysom
+// let Paysom = require('paysom');
+// let paysom = new Paysom(publishableKey, privateKey);
+// let checkstatus = await paysom.checkStatus('PAY-123456789');
+// console.log(checkstatus);
+// let paymentinfo = await paysom.getPaymentInfo('PAY-123456789');
+// console.log(paymentinfo);
+
+// check status can be used only for the payment that is already created
+// check status can be use only once for 10 minutes 
+
+// if developer dont want to redirect the user to the success url or cancel url then he can use the webhooks
+// npm install paysom
+// let Paysom = require('paysom');
+// let paysom = new Paysom(publishableKey, privateKey);
+// let webhook = await paysom.createWebhook('http://localhost:3000/webhook');
+// console.log(webhook);
+// webhook will return the webhook information including the webhook url
+// after that the developer will create a webhook endpoint and will add the webhook url to the webhook url field
+
+
+
+
+how to limit the number of requests to my node server
+// npm install express-rate-limit
+// let express = require('express');
+// let app = express();
+// let rateLimit = require('express-rate-limit');
+// let limiter = rateLimit({
+//     windowMs: 15*60*1000, // 15 minutes
+//     max: 100 // limit each IP to 100 requests per windowMs
+
+// })
+
+
+ 
+
+
+
+
+

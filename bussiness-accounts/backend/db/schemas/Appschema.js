@@ -6,7 +6,7 @@ const Appregisterschema = new schema({
   appname: { type: String, required: true },
   appowner: { type: String, required: true },
   appendpoint: { type: Object, required: true },
-  appsecretssecrets: { type: Array },
+  appsecretssecrets: { type: Object },
   appid: { type: String, required: true },
   apprequests: { type: Array},
   appstatus: { type: String },
