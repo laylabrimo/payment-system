@@ -55,7 +55,7 @@ const Devloper = () => {
         getapps()
     },[refresh])
     console.log(apps)
-    if (apps){
+    if (apps.length!=0){
         return (
             <Box width='100%' margin={4} display='flex' flexDirection='column' padding={4}    height='100%'>
                 <Heading size='lg'>Your Apps </Heading>
@@ -79,8 +79,8 @@ const Devloper = () => {
             <Tr key={app}>
            {pinisrequired?<></>:<>
            <Td>{app.appname}</Td>
-            <Td>{app.appsecretssecrets[0].publishkey}</Td>
-            <Td>{showsecretkey.show && app.appsecretssecrets[0].Secretkey==showsecretkey.secretkey?<div style={{display:'flex'}}>
+            <Td>{app?.appsecretssecrets?.publishkey}</Td>
+            <Td>{showsecretkey.show && app.appsecretssecrets.Secretkey==showsecretkey.secretkey?<div style={{display:'flex'}}>
                 {app.appsecretssecrets[0].Secretkey}
                 <FaEyeSlash onClick={()=>{
                     hidesecretkey()

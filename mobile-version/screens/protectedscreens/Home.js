@@ -14,19 +14,9 @@ import { useNavigation } from '@react-navigation/native';
 import {useContext} from 'react'
 import { Usercontext } from '../contexts/Usercontext';
 import resourses from '../../resouces';
-import * as Notifications from 'expo-notifications';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {io} from  'socket.io-client'
 
-var socket = io('http://68.183.246.197:4000');
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
 
 
 
@@ -35,61 +25,28 @@ Notifications.setNotificationHandler({
 
 const Home = () => {
 
-  async function sendPushNotification(expoPushToken,title) {
-    const message = {
-      to: expoPushToken,
-      sound: 'default',
-      title: title,
-      body: 'hi imran please see your email',
-      data: { someData: 'goes here' },
-    };
   
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
-  }
  
   let [user,setuser]=useContext(Usercontext)
   console.log(user)
   let [blance,setblance]=useState(user.finanaces.blance)
   let [token,settoken]=useState('')
-  useEffect(()=>{
-    let getnot=async()=>{
-     let status= await Notifications.getPermissionsAsync()
-     console.log('statuska waa ',status)
-     let token = await (await Notifications.getExpoPushTokenAsync()).data
-     console.log(token);
-     settoken(token)
-    }
-    getnot()
-   },[])
-  socket.on('connect',()=>{
-   Alert.alert('connected to the socket')
-  })
-  console.log(socket.connected)
+  
+ 
 
-  socket.on('updateblance'+user.cus_id,(payload)=>{
-console.log('from socket listening ',setblance(payload.newblance)),   sendPushNotification(token,'hi imran yo got money wwooooe!')})
-  let navigate=useNavigation()
-  useEffect(()=>{
-    navigate.addListener('focus',async()=>{
-      let Res=new resourses()
-      let usertoken=await AsyncStorage.getItem('accesstoken')
-      Res.token=usertoken
-      await Res.refreshtoken()
-      let respond=await Res.retriveuserbytoken()
-      let userka=respond.data.data.userka
-      setuser(userka)
-      
-      
-    })
-  },[])
+   let navigate=useNavigation()
+   useEffect(()=>{
+     navigate.addListener('focus',async()=>{
+       let Res=new resourses()
+       let usertoken=await AsyncStorage.getItem('accesstoken')
+       Res.token=usertoken
+       await Res.refreshtoken()
+       let respond=await Res.retriveuserbytoken()
+       let userka=respond.data.data.userka
+       setuser(userka)
+       
+     })
+     })
   let features=[
     {id:1,name:'Send Money',icon:sendmoneyicon,route:'sendmoney'},
     {id:2,name:'Withdrow',icon:withdrowicon,route:'withdrow'},

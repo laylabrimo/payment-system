@@ -8,7 +8,7 @@ let accounts = require('../db/schemas/registerschema')
 
  async function createpaymentintent (data){
 console.log('data ',data)
-let {bussinessid,amount,reason}=data;
+let {bussinessid,amount,reason,surl,furl}=data; // surl means success url and furl means failure url
 // first create payment intent id and then create qr code for that payment intent - global
 console.log('before creating payment intent',bussinessid,amount,reason)
 let paymentIntentId='PI'+makeid(20);
@@ -23,7 +23,7 @@ let qrCode=await QRCode.toDataURL(paymentIntentId,{
 let res= saveImage(qrCode,paymentIntentId);
 console.log(res)
 let link='http://localhost:5500/qr/qr'+paymentIntentId+'.png';
-let paymenturl='http://localhost:5500/pay/'+paymentIntentId;
+let paymenturl='http://localhost:3000/pay/'+paymentIntentId;
 let  bussinessinfo=await accounts.findOne({businessid:bussinessid})
 console.log('bussinessinfo ',bussinessinfo)
 let paymentinten= new Paymentintent({
@@ -34,7 +34,11 @@ let paymentinten= new Paymentintent({
     ammount:amount,
     reason:reason,
     qrcodeurl:link,
-    payment_url:paymenturl
+    payment_url:paymenturl,
+    created_at:Date.now(),
+    updated_at:Date.now(),
+    success_url:surl,
+    failure_url:furl,
 })
  paymentinten.save((err,doc)=>{
     if(err){

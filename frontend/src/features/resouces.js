@@ -12,7 +12,7 @@ export default class resourses {
   token = "";
   refreshtoken = "";
   http=axios.create({
-    baseURL:'http://localhost:4000/'
+    baseURL:'http://localhost:4000'
   })
   login = async (data) => {
     //  call http end point

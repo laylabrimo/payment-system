@@ -115,7 +115,7 @@ const Sendmoney = () => {
                 height:30,
                 position:'absolute',
                 top:10,
-                right:120
+                right:50
             }} source={cncelicon}/>
            </TouchableOpacity>
       <Text  style={{

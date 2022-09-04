@@ -1,7 +1,6 @@
 import { FlatList, StyleSheet, Text, View,SafeAreaView ,Image,Button,Alert} from 'react-native'
 import React from 'react'
 import { Usercontext } from '../contexts/Usercontext';
-import * as Clipboard from 'expo-clipboard';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { List } from 'native-base';
 
@@ -22,9 +21,7 @@ const Mycontacts = () => {
 
     }
    
-  const copyToClipboard = async (text) => {
-    await Clipboard.setStringAsync(text);
-    };
+
     
   return (
     <View style={styles.contactswrapper}>
@@ -71,7 +68,7 @@ const Mycontacts = () => {
            }}>ACC {l.acc}</Text>
            </View>
            <TouchableOpacity onPress={()=>{
-             copyToClipboard(l.acc)
+             
            }} >
                <Text style={{
                    borderWidth:0.6,

@@ -31,6 +31,8 @@ app.use('/tokens',require('./routes/auth/tokens.js'));
 app.use('/apps',require('./routes/applications/apps'));
 app.use('/customers',require('./routes/profiders/customesrprofider'));
 app.use('/keys',require('./routes/applications/keyschecker'));
+app.use('/api/intents',require('./routes/applications/intents'));
+app.use('/subscriptions',require('./routes/subscribtions/subscriptions'));
 
 
 

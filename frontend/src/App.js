@@ -38,6 +38,7 @@ import nointernet from '../src/assets/nointernet.png'
 import Sidebar from '../src/componenets/Sidebar'
 import Errorpage from './componenets/reusable/Errorpage';
 import Payintent from './componenets/payments/Payintent';
+import Subscribtions from './componenets/payments/Subscribtions';
 
 
 var socket = io('http://localhost:4000');
@@ -145,6 +146,7 @@ console.log(user)
 
           <Route path="/mycontacts" element={user==='null'?<Loading/>:user===null?<Login/>:<Mycontacts/>}/>
           <Route path="/pay/:paymentIntentId" element={user==='null'?<Loading/>:user===null?<Login/>:<Payintent/>}/>
+          <Route path="/subscribtions" element={user==='null'?<Loading/>:user===null?<Login/>:<Subscribtions/>}/>
 
           <Route path="/security" element={user==='null'?<Loading/>:user===null?<Login/>:<Security/>}/>
           <Route path="/sendmoney" element={user==='null'?<Loading/>:user===null?<Login/>:<Sendmoney/>}/>

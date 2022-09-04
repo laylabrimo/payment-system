@@ -36,7 +36,9 @@ router.post('/get',async(req,res)=>{
 })
 router.post('/getintentinfo',async(req,res)=>{
    let intentid=req.body.intentid;
+   console.log(intentid)
    let paymentintent=await Paymentintent.findOne({intent_id:intentid});
+   console.log(paymentintent)
    if(paymentintent){
          res.send(paymentintent);
    }
@@ -95,7 +97,7 @@ router.post('/payintent',async(req,res)=>{
                   let trx_id=await createtransaction(trx_info);
 
             // add this customer to the list of customers of this bussiness 
-            let updatedbussiness= await  account.updateOne({businessid:intentinfo.who.bussinessid},{$push:{customers:userfromdb}});
+            let updatedbussiness= await  account.updateOne({businessid:intentinfo.who.bussinessid},{$push:{customers:userfromdb.cus_id}});
             console.log('kanaa la update gareeyay ',intentinfo.who);
                res.send({
                   status:'success',

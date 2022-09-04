@@ -1,26 +1,38 @@
 import React, { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
-import { Alert, Box, Button, Card, CardContent, CardHeader, Divider, LinearProgress, TextField } from '@mui/material';
+import { Alert, Box, Button, Card, CardContent, CardHeader, Divider, LinearProgress, TextField, Typography } from '@mui/material';
 import { useRef } from 'react';
 import Resourses from '../features/resouces';
 import Appinputfield from './reusable/Appinputfield';
 import logo from '../images/diu-logo.png'
 import loging from "../images/login.jpg";
 
-import useSound from "use-sound";
 import login from '../assets/login.mp3'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
 function Login() {
+  let params=useParams()
 let navigate=useNavigate()
   let [username,setusername]=useState(null)
   let [password,setpassword]=useState(null)
   let [loading,setloading]=useState(false)
   let [error,seterror]=useState('')
   let [success,setsuccess]=useState('')
-  let [LoginSound]=useSound(login)
-  React.useEffect(()=>{
-    LoginSound()
-  },[LoginSound])
+  let [intent,setintent]=useState(params?.paymentIntentId)
+ 
+  console.log(intent)
+  useEffect(()=>{
+    let getpaymentintentinfo=async(id)=>{
+        let res=await axios.post('http://localhost:5500/intents/getintentinfo',{intentid:id});
+        console.log('jhjhjh',res.data)
+        setintent(res.data)
+     
+        }
+       params.paymentIntentId &&  getpaymentintentinfo(intent);
+},[])
+  
+
   let handlesubmit=async(e)=>{
     e.preventDefault()
    setloading(true)
@@ -82,20 +94,39 @@ let navigate=useNavigate()
     
     <Box sx={{
       flex:1,
-      margin:'10px'
+      margin:'10px',
+      display:'flex',
+      flexDirection:'column',
+      justifyContent:'center',
+      alignItems:'center'
     }}>
-       <Card sx={{width:'700px',height:'500px'}}>
+       <Card sx={{width:'700px',height:'900px'}}>
     
-    <img src={logo} width='200px' style={{
+    <img src='/images/logo.png' width='400px' height='400px' style={{
       
-      margin:'12px'
+   
     }} />
-    <CardHeader title='Login'/>
+  {intent &  <p style={{
+      margin:'15px',
+      fontSize:'20px',
+      color:'dodgerblue'
+    }}>
+      Your are about to pay {intent?.ammount} USD for a {intent?.reason} to {intent?.who?.bname} please to 
+      process your payment please enter your credentials to access the payment page
+
+      </p>}
+    <CardHeader style={{
+           
+    }} title={intent==undefined?'login':'please login to pay'}/>
+  
+
     <CardContent>
+      
     <form style={{
-      margin:'10px'
+    
+     
     }} onSubmit={handlesubmit}>
-        <Appinputfield  onchange={(e)=>{
+        <Appinputfield   onchange={(e)=>{
           setusername(e.target.value)
         }} type='email'  name='email or number' label='Email' placeholder='enteremail or number'/>
         <Divider/>
@@ -122,18 +153,7 @@ let navigate=useNavigate()
   </Card>
 
     </Box>
-    <Box 
-      sx={{
-        width: "100%",
-        height: "100%",
-        display: { xs: "none", sm: "none", md: "flex" },
-        flex: 1.5,
-        justifyContent: "center",
-        margin:'14px'
-    
-    }}>
-<img src={loging}/>
-    </Box>
+   
    
     
   </Box>

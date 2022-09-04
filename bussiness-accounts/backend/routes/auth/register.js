@@ -39,6 +39,7 @@ let {
     business_type: '',
     business_category: '',
     businesspassword: password,
+    subscribtions:[]
 }
 let newRegister=new Registerschema(data)
 try{

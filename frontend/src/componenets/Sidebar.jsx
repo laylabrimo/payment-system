@@ -33,7 +33,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import { useNavigate } from 'react-router-dom';
-import { SendOutlined } from '@mui/icons-material';
+import { SendOutlined, Subscriptions, SubscriptRounded } from '@mui/icons-material';
 import Areyousure from './payments/popups/Areyousure';
 import ContactsIcon from '@mui/icons-material/Contacts';
 
@@ -47,6 +47,7 @@ export default function Sidebar(props) {
     {status:true,name:'Dashboard',icon:<DashboardIcon/>,selected:dashboardselcted,path:'/'},
     {status:true,name:'Account',icon:<AccountBalanceWalletIcon/>,selected:false,path:'/myaccount'},
     {status:true,name:'Send money',icon:<SendOutlined/>,selected:false,path:'/sendmoney'},
+    {status:true,name:'Subscriptions',icon:<Subscriptions/>,selected:false,path:'/subscribtions'},
     {status:true,name:'Recharge',icon:<MoveDownIcon/>,selected:false,path:'/recharge'},
     {status:true,name:'My contacts',icon:<ContactsIcon/>,selected:false,path:'/mycontacts'},
     {status:true,name:'Account Security',icon:<SecurityIcon/>,selected:false,path:'/security'},

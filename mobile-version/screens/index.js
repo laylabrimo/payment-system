@@ -14,7 +14,7 @@ import MyTabs from '../routes/Tabs';
 import Sendmoney from './protectedscreens/Payments/Sendmoney';
 import Mycontacts from './protectedscreens/Mycontacts';
 import Recharge from './protectedscreens/Payments/Recharge';
-
+import Pamentconfirm from './protectedscreens/Paymentconfirm';
 export default function Start() {
 
 
@@ -44,6 +44,9 @@ export default function Start() {
         <Stack.Screen options={{
               headerShown:false
           }} name='sendmoney' component={Sendmoney}/>
+           <Stack.Screen options={{
+              headerShown:false
+          }} name='confirmpayment' component={Pamentconfirm}/>
            <Stack.Screen options={{
               headerShown:false
           }} name='Recharge' component={Recharge}/>

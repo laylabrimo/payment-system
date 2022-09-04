@@ -46,20 +46,8 @@ app.all("/*", function (req, res, next) {
 });
 
 
-io.on("connection", (soket) => {
-  console.log("someone connected ", soket.id);
-  soket.on("sentmoney", async (payload) => {
-    console.log(payload);
-    let user = payload;
-    let touser = user.to.user;
-    let fromuser = user.from.user;
-    let userka = await users.findOne({ cus_id: touser.cus_id });
-    console.log("userka loo diray ", userka);
-    io.emit("recievemoney" + touser.cus_id, {
-      name: fromuser.name,
-      amount: payload.amount,
-    });
-  });
+
+
   app.use(bodyparser({}));
   app.use("/login", login);
   app.use("/register", register);
@@ -454,7 +442,7 @@ io.on("connection", (soket) => {
       });
     }
   });
-  });
+  
 
 
 server.listen(4000);

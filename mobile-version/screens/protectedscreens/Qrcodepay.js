@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import authrequired from '../../auth.js/auth'
+import Pamentconfirm from './Paymentconfirm';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import qrplaceholder from '../../assets/qrplaceholder.png'
+import { Image } from 'native-base';
+import Loading from '../Loading';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  useEffect(()=>{
-    authrequired()
-  },[])
+  let [paymentid,setpaymentid]=useState('')
+  let navigate=useNavigation()
+
 
   useEffect(() => {
     (async () => {
@@ -19,23 +24,30 @@ export default function App() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    let dataa=data
+    // navigate to Pamentconfirm screen
+    navigate.navigate('confirmpayment',{data:dataa})
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return <Loading/>
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+ 
 
   return (
+
     <View style={styles.container}>
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarCodeScanned={ handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+   <Image alt='qrcode place holder' style={{
+    marginTop:450,
+
+   }} width={300} height={300} source={qrplaceholder}/>
     </View>
   );
 }
@@ -45,5 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });
+  

@@ -29,6 +29,7 @@ export default class Apicaller {
   }
   verifytoken=async(token)=>{
     let res=await axios.post("/tokens/verifytoken",{token})
+    console.log(res);
     return res
   }
   sendvercode=async()=>{
@@ -79,6 +80,10 @@ export default class Apicaller {
   }
   getcustomers=async(data)=>{
     let res= await axios.post('/customers/get',{accountid:data})
+    return res.data
+  }
+  create_subscribtion=async(data)=>{
+    let res= await axios.post('/subscriptions/create',{...data})
     return res.data
   }
 }

@@ -17,11 +17,13 @@ const Payintent = () => {
     
     let params= useParams()
     let intentid=params.paymentIntentId
+  
     useEffect(()=>{
         let getpaymentintentinfo=async(id)=>{
             let res=await axios.post('http://localhost:5500/intents/getintentinfo',{intentid:id});
             console.log('jhjhjh',res.data)
             setpaymentintent(res.data)
+         
             }
             getpaymentintentinfo(intentid);
     },[])
@@ -29,12 +31,20 @@ const Payintent = () => {
         let confirm=async()=>{
             let res=await axios.post('http://localhost:5500/intents/payintent',{intentid:intentid,user:cu,token:localStorage.getItem('accesstoken')});
             console.log(res.data)
+            if (res.data.status=='success') {
+                window.location.href=paymentintent.success_url
+            }
         }
         confirm();
     }
    
     if (paymentintent==null) {
         return <Loading />
+    }
+    if (paymentintent.status=='paid') {
+        // redirect to paymentintent.success_url
+      window.location.href=paymentintent.success_url
+
     }
     console.log('paymentintent',paymentintent.who )
 

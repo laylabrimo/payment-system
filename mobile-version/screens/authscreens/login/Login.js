@@ -30,7 +30,7 @@ const Login = () => {
      setemail('')
    },[])
    let retriveuserbytoken = async (token) => {
-    let user = await axios.post("http://192.168.0.2:3023/retriveuserbytoken", {
+    let user = await axios.post("http://192.168.0.101:4000/retriveuserbytoken", {
       token,
     });
     console.log('in retrive user by token',user)
